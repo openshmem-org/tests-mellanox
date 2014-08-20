@@ -1,0 +1,9 @@
+Installation Instructions
+*************************
+
+In order to compile verifier:
+
+% export PATH=/path/to/oshmem/home/bin:$PATH
+% autogen.sh
+% configure --prefix=$PWD/install
+% make install -j4 install
