@@ -16,7 +16,7 @@
 #
 #
 ACLOCAL_AMFLAGS=-I m4
-dist_doc_DATA = README.md
+dist_doc_DATA = README
 EXTRA_DIST=autogen.sh
 
 bin_PROGRAMS = oshmem_test
