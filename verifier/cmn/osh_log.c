@@ -120,11 +120,16 @@ int log_send( const char* name,
     int buf_size = 256;
     BOOL cr = FALSE;
 
+    /* Current state check */
+    if ( !osh_config.active || 
+        (osh_config.my_pe == INVALID_PE) || 
+        (osh_config.exec_mode.log_pe_list == (unsigned long long)INVALID_PE) )
+    {
+         return status;
+    }
+
     /* Logging on the defined PE only */
-    if ( osh_config.active && 
-        (osh_config.my_pe != INVALID_PE) && 
-        (osh_config.exec_mode.log_pe_list != (unsigned long long)INVALID_PE) && 
-        (!PE_LIST_CHECK(osh_config.my_pe, osh_config.exec_mode.log_pe_list)) )
+    if ( (!PE_LIST_CHECK(osh_config.my_pe, osh_config.exec_mode.log_pe_list)) )
     {
          return status;
     }

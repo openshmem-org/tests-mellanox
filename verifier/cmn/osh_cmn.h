@@ -123,9 +123,9 @@ static INLINE uint64_t sys_rdtsc(void)
 #define sys_array_size(a) (sizeof(a)/sizeof(a[0]))
 
 
-#define PE_LIST_SIZE    ((int)(8*sizeof(unsigned long long) - 2))    /**< one bit is reserved for all case (INVALID_PE) */
-#define PE_LIST_CHECK(pe, pe_list)  (((pe) < PE_LIST_SIZE)&&((1 << (pe)) & (pe_list)))
-#define PE_LIST_SET(pe, pe_list)  ((pe_list) |= (1 << (pe)))
+#define PE_LIST_SIZE    ((int)(8 * sizeof(unsigned long long) - 2))    /**< one bit is reserved for all case (INVALID_PE) */
+#define PE_LIST_CHECK(pe, pe_list)  (((pe) < PE_LIST_SIZE) && ((1ULL << (pe)) & (pe_list)))
+#define PE_LIST_SET(pe, pe_list)  ((pe_list) |= (1ULL << (pe)))
 
 #define INVALID_PE  (-1)
 #define ROOT_PE     (0)
