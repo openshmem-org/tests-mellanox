@@ -135,7 +135,15 @@ static int stressing_shmalloc_test (void)
     heap_size = memheap_size ();
 
     max_possible_alloc = binary_search_size (POTENTIAL_MAX_SIZE (heap_size));
+#if 0
     if (max_possible_alloc != heap_size) {
+#else
+    /*
+     * In the assumption, that smalloc can allocate memory that
+     * is greater than set in environment variable by an user.
+     */
+    if (max_possible_alloc < heap_size) {
+#endif
         log_error(OSH_TC, "Maximum allocation size is %ld . exiting...\n",
                 max_possible_alloc);
         err |= ERROR_MAXALLOC;
