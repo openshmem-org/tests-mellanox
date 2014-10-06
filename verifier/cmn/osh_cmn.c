@@ -400,7 +400,7 @@ char * get_rc_color(int rc){
 
 #define DEFAULT_SYMMETRIC_HEAP_SIZE         (256)
 #define SIZE_IN_MEGA_BYTES(size_in_mb)      (size_in_mb * 1024 * 1024)
-int memheap_size (void) {
+unsigned long long memheap_size (void) {
     char *p;
     unsigned long long factor;
     int idx;

@@ -333,7 +333,7 @@ int get_heap_size();
 static INLINE unsigned long long memheap_align(unsigned long top) {
     return ((top + MEMHEAP_BASE_MIN_SIZE - 1) & ~(MEMHEAP_BASE_MIN_SIZE - 1));
 }
-int memheap_size(void);
+unsigned long long memheap_size(void);
 
 static INLINE unsigned sys_log2(unsigned long long val)
 {
