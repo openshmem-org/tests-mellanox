@@ -24,7 +24,8 @@ static int test_item2(void);
 static int test_item3(void);
 
 
-#define WAIT_SEC  1
+#define WAIT_SEC      1
+#define WAIT_MAX_SEC 20
 #define COUNT_VALUE 300
 
 static long* pSync = NULL;
@@ -96,7 +97,7 @@ static int test_item1(void)
     num_proc = _num_pes();
     my_proc = _my_pe();
 
-    wait = my_proc * WAIT_SEC;
+    wait = sys_min(my_proc * WAIT_SEC, WAIT_MAX_SEC);
     expect_value = ( (num_proc - my_proc - 1) > 0 ? (num_proc - my_proc - 1) * WAIT_SEC - 2 : 0 );
 
     /* This guarantees that PE set initial value before peer change one */
@@ -138,7 +139,7 @@ static int test_item2(void)
 
     if (my_proc > 0)
     {
-        wait = my_proc * WAIT_SEC;
+        wait = sys_min(my_proc * WAIT_SEC, WAIT_MAX_SEC);
         expect_value = ( (num_proc - my_proc - 1) > 0 ? (num_proc - my_proc - 1) * WAIT_SEC - 2 : 0 );
     }
     else
