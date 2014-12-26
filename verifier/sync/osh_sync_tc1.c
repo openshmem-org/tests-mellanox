@@ -23,7 +23,8 @@ static int test_item1(void);
 static int test_item2(void);
 
 
-#define WAIT_SEC  1
+#define WAIT_SEC      1
+#define WAIT_MAX_SEC 20
 #define CYCLE_COUNT 100
 
 
@@ -70,7 +71,7 @@ static int test_item1(void)
     num_proc = _num_pes();
     my_proc = _my_pe();
 
-    wait = my_proc * WAIT_SEC;
+    wait = sys_min(my_proc * WAIT_SEC, WAIT_MAX_SEC);
     expect_value = ( (num_proc - my_proc - 1) > 0 ? (num_proc - my_proc - 1) * WAIT_SEC - 1 : 0 );
 
     shmem_barrier_all();
