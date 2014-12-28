@@ -19,8 +19,10 @@
  * Test Case can consitis of different number of separate items
  * it is recommended to form every item as function
  ***************************************************************************/
+#ifdef BAD_TEST
 static int test_item1(void);
 static int test_item2(void);
+#endif
 static int test_item3(void);
 
 
@@ -47,6 +49,7 @@ int osh_sync_tc4(const TE_NODE *node, int argc, const char *argv[])
         rc = TC_SETUP_FAIL;
     }
 
+#ifdef BAD_TEST
     /* Equal to shmem_barrier_all */
     if (rc == TC_PASS)
     {
@@ -62,6 +65,7 @@ int osh_sync_tc4(const TE_NODE *node, int argc, const char *argv[])
         log_item(node, 2, rc);
         shmem_barrier_all();
     }
+#endif
 
     /* Massive barrier */
     if (rc == TC_PASS)
@@ -79,6 +83,7 @@ int osh_sync_tc4(const TE_NODE *node, int argc, const char *argv[])
     return rc;
 }
 
+#ifdef BAD_TEST
 
 /****************************************************************************
  * Place for Test Item functions
@@ -176,7 +181,7 @@ static int test_item2(void)
 
     return rc;
 }
-
+#endif
 
 static int test_item3(void)
 {
