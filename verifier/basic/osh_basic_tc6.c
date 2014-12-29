@@ -20,7 +20,10 @@
  * Test Case can consitis of different number of separate items
  * it is recommended to form every item as function
  ***************************************************************************/
+
+#ifdef BAD_TEST
 static int test_item1(void);
+#endif
 static int test_item2(void);
 
 
@@ -38,10 +41,12 @@ int osh_basic_tc6(const TE_NODE *node, int argc, const char *argv[])
     UNREFERENCED_PARAMETER(argc);
     UNREFERENCED_PARAMETER(argv);
 
+#ifdef BAD_TEST
     /* Barrier for all, version with timings */
     rc = test_item1();
     log_item(node, 1, rc);
     shmem_barrier_all();
+#endif
 
     /* Barrier for all, version with shmem_int_p(...) routine */
     if (rc == TC_PASS)
@@ -55,6 +60,7 @@ int osh_basic_tc6(const TE_NODE *node, int argc, const char *argv[])
 }
 
 
+#ifdef BAD_TEST
 /****************************************************************************
  * Place for Test Item functions
  ***************************************************************************/
@@ -88,6 +94,7 @@ static int test_item1(void)
     return rc;
 }
 
+#endif
 
 static int test_item2(void)
 {

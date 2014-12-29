@@ -2,7 +2,7 @@
 #set -ex
 rm -rf autom4te.cache
 
-mkdir -p config/m4 config/aux 
+mkdir -p config/m4 config/aux m4
 
 autoreconf -v --install || exit 1
 rm -rf autom4te.cache
