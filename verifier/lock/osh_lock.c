@@ -16,10 +16,10 @@
 
 const TE_NODE lock_tcs[] =
 {
-    { NULL, osh_lock_tc1,  "set_lock",       aopt_set_string( "tc1" ), 	"Distributed locking: A correctness test.", TEST_SKIP},
-    { NULL, osh_lock_tc2,  "clear_lock",     aopt_set_string( "tc2" ), 	"Distributed locking: A stress test.", TEST_SKIP},
-    { NULL, osh_lock_tc3,  "test_lock",      aopt_set_string( "tc3" ), 	"shmem_test_lock(): A stub test.", TEST_SKIP},
-    { NULL, osh_lock_tc4,  "atomic_lock_stress",    aopt_set_string( "tc4" ), 	"atomic_lock_stress(): Atomic lock stress test 1.", TEST_SKIP},
+    { NULL, osh_lock_tc1,  "set_lock",       aopt_set_string( "tc1" ), 	"Distributed locking: A correctness test.", TEST_RUN},
+    { NULL, osh_lock_tc2,  "clear_lock",     aopt_set_string( "tc2" ), 	"Distributed locking: A stress test.", TEST_RUN},
+    { NULL, osh_lock_tc3,  "test_lock",      aopt_set_string( "tc3" ), 	"shmem_test_lock(): A stub test.", TEST_RUN},
+    { NULL, osh_lock_tc4,  "atomic_lock_stress",    aopt_set_string( "tc4" ), 	"atomic_lock_stress(): Atomic lock stress test 1.", TEST_RUN},
     { NULL, NULL,            NULL,	          aopt_set_string( NULL ),        NULL, TEST_IGNORE}
 };
 

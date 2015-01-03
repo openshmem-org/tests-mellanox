@@ -22,7 +22,7 @@ int osh_lock_tc2(const TE_NODE *node, int argc, const char *argv[])
 {
     //This is a stress test which makes sure the distributed locking is not hanging
     long *test_variable = shmalloc(sizeof(long));
-    int number_of_iterations = 10000;
+    int number_of_iterations = 50;
     int i = 0;
 
     UNREFERENCED_PARAMETER(node);

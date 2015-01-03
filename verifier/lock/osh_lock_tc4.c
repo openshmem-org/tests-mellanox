@@ -238,8 +238,8 @@ static int test_item1()
     int num_pe = num_pes();
     int res = TC_PASS;
     int writer = 0;
-    const int number_of_iterations = num_pe - 1;
-    const int number_of_write_attempts = 500;
+    const int number_of_iterations = 10; //num_pe - 1;
+    const int number_of_write_attempts = 5;//00;
     int *test_variable = shmalloc(sizeof(int) * 1);
 
     mca_atomic_basic_init(0, 0);
@@ -253,8 +253,8 @@ static int test_item1()
                 atomic_basic_lock(0);
 
                 shmem_int_put(test_variable, &me, 1, 0);
-                //shmem_quiet();
-                usleep(10000);
+                shmem_quiet();
+                //usleep(10000);
                 shmem_int_get(test_variable, test_variable, 1, 0);
                 if (res == TC_PASS && *test_variable != me)
                 {
@@ -287,8 +287,8 @@ static int test_item1()
 static int test_item2()
 {
     int *remote_pe = shmalloc(sizeof(int));
-    int number_of_iterations = 10000;
-    int number_of_checks = 10;
+    int number_of_iterations = 100;
+    int number_of_checks = 5;
     int i = 0, j = 0;
     int my_pe = _my_pe();
     int status = TC_PASS;
@@ -301,7 +301,7 @@ static int test_item2()
     {
         atomic_basic_lock(0);
         shmem_int_p(remote_pe, my_pe, 0);
-        //shmem_quiet();
+        shmem_quiet();
         for (j = 0; j < number_of_checks; j++)
         {
             int remote_value = 0;
@@ -310,7 +310,7 @@ static int test_item2()
             {
                 break;
             }
-            usleep(1);
+            //usleep(1);
         }
         for (j = 0; j < number_of_checks; j++)
         { 
