@@ -58,7 +58,7 @@ static int test_item1(void)
     int peer;
     int size;
     char *buf;
-    int test_byte;
+    int test_byte, expected_val;
     int max_heap_size_per_proc;
 
     num_proc = _num_pes();
@@ -79,7 +79,8 @@ static int test_item1(void)
     log_debug(OSH_TC, "%d: buf = %p size=%d\n", my_proc, buf, size);
     for (; size <= max_heap_size_per_proc; size *=2)
     {
-        memset(buf + max_heap_size_per_proc * my_proc, 1 + my_proc % (size - 2), max_heap_size_per_proc);
+        expected_val = 1 + my_proc % (size - 2);
+        memset(buf + max_heap_size_per_proc * my_proc, expected_val, max_heap_size_per_proc);
         log_debug(OSH_TC, "\n%d: b4 barrier size = %d\n", my_proc, size);
         shmem_barrier_all();
         log_debug(OSH_TC, "%d: b4 putmem size = %d  %p -> %p\n", my_proc, size,
@@ -94,9 +95,9 @@ static int test_item1(void)
         shmem_getmem(&test_byte, buf+max_heap_size_per_proc*my_proc + size - 1, 1, peer);
 
         log_debug(OSH_TC, "%d: after getmem size = %d result=%x\n", my_proc, size, test_byte);
-        if (test_byte != 1 + my_proc % (size-2))
+        if (test_byte != (expected_val & 0xff))
         {
-            log_error(OSH_TC, "fence failed at size %d got = %x expected = %x\n", size, test_byte, 1 + my_proc % (size-2));
+            log_error(OSH_TC, "fence failed at size %d got = %x expected = %x\n", size, test_byte, (expected_val & 0xff));
             rc = TC_FAIL;
         }
 
