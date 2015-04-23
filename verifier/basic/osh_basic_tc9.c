@@ -59,7 +59,7 @@ static int test_item1(void)
     int size;
     char *buf;
     int test_byte, expected_val;
-    int max_heap_size_per_proc;
+    uint64_t max_heap_size_per_proc;
 
     num_proc = _num_pes();
     my_proc = _my_pe();
@@ -70,7 +70,7 @@ static int test_item1(void)
     buf = (char *)shmalloc(max_heap_size_per_proc * num_proc);
     if (!buf)
     {
-        log_error(OSH_TC, "shmalloc(%d)\n", max_heap_size_per_proc * num_proc);
+        log_error(OSH_TC, "shmalloc(%lu)\n", max_heap_size_per_proc * num_proc);
         return TC_SETUP_FAIL;
     }
 
