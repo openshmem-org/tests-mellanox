@@ -55,7 +55,7 @@ const TE_NODE data_tcs[] =
     { NULL, osh_data_tc36,  "put32",            aopt_set_string( "tc36" ), 	"shmem_put32(): Writes contiguous 32-bit elements to a remote PE.", TEST_RUN},
     { NULL, osh_data_tc37,  "put64",	        aopt_set_string( "tc37" ), 	"shmem_put64(): Writes contiguous 64-bit elements to a remote PE.", TEST_RUN},
     { NULL, osh_data_tc38,  "put128",           aopt_set_string( "tc38" ), 	"shmem_put128(): Writes contiguous 128-bit elements to a remote PE.", TEST_RUN},
-    { NULL, osh_data_tc39,  "put_get",          aopt_set_string( "tc39" ), 	"single put and get operations", TEST_RUN},
+    { NULL, osh_data_tc39,  "put_get",          aopt_set_string( "tc39" ), 	"read data written by peer after barrier directly by address and by get operation", TEST_RUN},
     { NULL, osh_data_tc40,  "put_blocking",     aopt_set_string( "tc40" ), 	"blocking PUT operation (data specified for transfer should be buffered)", TEST_RUN},
     { NULL, NULL,           NULL,	aopt_set_string( NULL ),    NULL, TEST_IGNORE}
 };

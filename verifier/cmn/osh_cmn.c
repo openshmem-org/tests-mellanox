@@ -15,7 +15,7 @@
 #include "shmem.h"
 
 static int _put_completion_flag = PUT_IN_PROGRESS;
-extern void opal_progress(void);
+
 void wait_for_put_completion(int pe, double timeout)
 {
     double time_start = sys_gettime();
@@ -23,7 +23,7 @@ void wait_for_put_completion(int pe, double timeout)
     shmem_int_p(&_put_completion_flag,PUT_COMPLETED,pe);
     while (PUT_COMPLETED != _put_completion_flag &&
            (sys_gettime()-time_start < timeout*1e6)){
-        opal_progress();
+        do_progress();
     }
 
     /* reset completion flag for next usages */

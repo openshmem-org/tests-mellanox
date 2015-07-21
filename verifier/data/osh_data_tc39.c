@@ -27,8 +27,6 @@ static int test_item3(void);
 
 #define WAIT_COUNT  5
 
-extern void opal_progress(void);
-
 
 /****************************************************************************
  * Test Case processing procedure
@@ -45,7 +43,7 @@ int osh_data_tc39(const TE_NODE *node, int argc, const char *argv[])
     log_item(node, 1, rc);
     shmem_barrier_all();
 
-    /* opal progress */
+    /* progress */
     if (rc == TC_PASS)
     {
         rc = test_item2();
@@ -101,7 +99,7 @@ static int test_item1(void)
         /* Wait is set instead of barrier to give some time to all PE for setting their values */
         shmem_barrier_all();
 
-        /* Get value from peer */
+        /* Put value to peer */
         shmem_int_p(shmem_addr, peer_value, peer_proc);
 
         shmem_barrier_all();
@@ -168,7 +166,7 @@ static int test_item2(void)
         /* Wait is set instead of barrier to give some time to all PE for setting their values */
         shmem_barrier_all();
 
-        /* Get value from peer */
+        /* Put value to peer */
         shmem_int_p(shmem_addr, peer_value, peer_proc);
 
         shmem_barrier_all();
@@ -177,7 +175,7 @@ static int test_item2(void)
             while (wait--)
             {
                 value = *shmem_addr;
-                opal_progress();
+                do_progress();
 
                 if (expect_value == value) break;
                 sleep(1);
@@ -236,7 +234,7 @@ static int test_item3(void)
         /* Wait is set instead of barrier to give some time to all PE for setting their values */
         shmem_barrier_all();
 
-        /* Get value from peer */
+        /* Put value to peer */
         shmem_int_p(shmem_addr, peer_value, peer_proc);
 
         shmem_barrier_all();
