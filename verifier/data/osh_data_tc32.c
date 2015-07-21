@@ -230,17 +230,8 @@ static int test_item2(void)
          * These routines start the remote transfer and may return before the data
          * is delivered to the remote PE
          */
-        shmem_barrier_all();
-        {
-            int wait = WAIT_COUNT;
-
-            while (wait--)
-            {
-                value = *shmem_addr;
-                if (expect_value == value) break;
-                sleep(1);
-            }
-        }
+		wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+		value = *shmem_addr;
 
         rc = (expect_value == value ? TC_PASS : TC_FAIL);
 

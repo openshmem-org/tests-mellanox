@@ -18,5 +18,8 @@ else
     CFLAGS="$CFLAGS -Wundef"
 fi
 
+AC_CHECK_LIB(oshmem, opal_progress, [],
+			     AC_MSG_ERROR([opal_progress() not found. It seems not OpenMPI.
+							   ]))
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
