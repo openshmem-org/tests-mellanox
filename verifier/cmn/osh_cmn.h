@@ -313,8 +313,10 @@ enum{
 
 inline void do_progress(void)
 {
+#if defined(HAVE_OPAL_PROGRESS)
 	extern void opal_progress(void);
 	opal_progress();
+#endif
 }
 
 void wait_for_put_completion(int pe, double timeout);
