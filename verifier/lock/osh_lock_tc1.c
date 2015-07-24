@@ -24,8 +24,8 @@ int osh_lock_tc1(const TE_NODE *node, int argc, const char *argv[])
     //static long test_variable = 0;
     long *test_variable = shmalloc(sizeof(long));
     int *remote_pe = shmalloc(sizeof(int));
-    int number_of_iterations = 1000;
-    int number_of_checks = 10;
+    int number_of_iterations = 5;
+    int number_of_checks = 2;
     int i = 0, j = 0;
     int my_pe = _my_pe();
     int status = TC_PASS;
@@ -61,7 +61,7 @@ int osh_lock_tc1(const TE_NODE *node, int argc, const char *argv[])
                 status = TC_FAIL;
                 break;
             }
-            //usleep(1);
+            usleep(1);
         }
         shmem_clear_lock(test_variable);
     }
