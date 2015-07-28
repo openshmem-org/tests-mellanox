@@ -42,7 +42,7 @@ static int test_item7(void);
  */
 static int __parse_opt( const TE_NODE *, int, const char ** );
 
-#define COUNT_VALUE 100
+#define COUNT_VALUE 5
 #define MAX_BUFFER_SIZE 8096
 
 static long __max_buffer_size = MAX_BUFFER_SIZE;
