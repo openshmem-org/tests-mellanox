@@ -176,7 +176,7 @@ static int __do_exec( const TE_NODE* node, const AOPT_OBJECT* opt_obj, int argc,
         int num_passes = 0;
         int num_skipped = 0;
         int num_ignored = 0;
-        int num_unstable = 0;
+        int num_crippled = 0;
 
         /* Initialize OpenSHMEM */
         _shmem_init();
@@ -288,19 +288,16 @@ static int __do_exec( const TE_NODE* node, const AOPT_OBJECT* opt_obj, int argc,
 
                     _shmem_sync_result(rc);
 
-                    if (rc && !ignored && !skipped )
-                    {
-                        test_status = OSH_ERR_TEST_FAILED;
-                    }
-
                     num_tests++;
                     if (!ignored && !skipped)
                     {
                         if (TC_PASS == rc) {
                             num_passes += 1;
                         } else if (TC_SETUP_FAIL == rc) {
-                            num_unstable += 1;
-                        }
+                            num_crippled += 1;
+                        } else {
+                            test_status = OSH_ERR_TEST_FAILED;
+						}
                     }
                     else
                     {
@@ -367,10 +364,10 @@ static int __do_exec( const TE_NODE* node, const AOPT_OBJECT* opt_obj, int argc,
             log_info(OSH_STD, "\n");
             log_info(OSH_STD, "**********************************\n");
             log_info(OSH_STD, "* Passed: %d\n", num_passes);
-            log_info(OSH_STD, "* Failed: %d\n", (num_tests - num_passes - num_skipped - num_ignored - num_unstable));
+            log_info(OSH_STD, "* Failed: %d\n", (num_tests - num_passes - num_skipped - num_ignored - num_crippled));
             log_info(OSH_STD, "* Skipped: %d\n", num_skipped);
             log_info(OSH_STD, "* Ignored: %d\n", num_ignored);
-            log_info(OSH_STD, "* Unstable: %d\n", num_unstable);
+            log_info(OSH_STD, "* Incompat:%d\n", num_crippled);
             log_info(OSH_STD, "* Total: %d\n", num_tests);
             log_info(OSH_STD, "* Start time: %02d-%02d-%04d %02d:%02d:%02d\n",
                                             (localtime(&start_time))->tm_mday,

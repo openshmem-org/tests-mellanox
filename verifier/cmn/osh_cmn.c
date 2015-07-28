@@ -379,7 +379,7 @@ char * get_rc_string(int rc){
         case TC_FAIL:
             return "FAIL";
         case TC_SETUP_FAIL:
-            return "ABUSE";
+            return "WARN";
         default:
             return "NONE";
     }
