@@ -288,16 +288,18 @@ static int __do_exec( const TE_NODE* node, const AOPT_OBJECT* opt_obj, int argc,
 
                     _shmem_sync_result(rc);
 
+                    if (rc && !ignored && !skipped )
+                    {
+                        test_status = OSH_ERR_TEST_FAILED;
+                    }
 
                     num_tests++;
-                    int unstable = 0;
                     if (!ignored && !skipped)
                     {
                         if (TC_PASS == rc) {
                             num_passes += 1;
                         } else if (TC_SETUP_FAIL == rc) {
                             num_unstable += 1;
-                            unstable = 1;
                         }
                     }
                     else
@@ -310,10 +312,6 @@ static int __do_exec( const TE_NODE* node, const AOPT_OBJECT* opt_obj, int argc,
                         {
                             num_skipped++;
                         }
-                    }
-                    if (rc && !ignored && !skipped && !unstable)
-                    {
-                        test_status = OSH_ERR_TEST_FAILED;
                     }
                     log_info(OSH_STD, "%s%-6.6s%s %-10.10s %-14.14s %s\n",
 #if defined(__LINUX__)
