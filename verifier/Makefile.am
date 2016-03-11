@@ -50,7 +50,8 @@ noinst_HEADERS = \
 	sync/osh_wait_until_template.c \
 	strided/osh_strided_tests.h \
 	mix/osh_mix.h \
-	analysis/osh_analysis.h\
+	analysis/osh_analysis.h \
+	nbi/osh_nbi_tests.h \
 	misc/osh_misc_tests.h
 
 oshmem_test_SOURCES = \
@@ -233,8 +234,15 @@ oshmem_test_SOURCES = \
 	analysis/osh_analysis_tc3.c \
 	analysis/osh_analysis_tc4.c \
 	analysis/osh_analysis_tc5.c \
+	nbi/osh_nbi.c \
 	misc/osh_misc.c \
 	misc/osh_misc_tc1.c
+
+if HAVE_NBI
+oshmem_test_SOURCES += \
+	nbi/osh_nbi_tc1.c \
+	nbi/osh_nbi_tc2.c
+endif
 
 clean-local:
 	rm -f oshmem_test
