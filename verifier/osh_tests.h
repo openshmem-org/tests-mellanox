@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014      Mellanox Technologies, Inc.
+ * Copyright (c) 2014-2016 Mellanox Technologies, Inc.
  *                         All rights reserved.
  * $COPYRIGHT$
  *
@@ -21,6 +21,7 @@ int proc_tst_strided( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_sync( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_mix( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_analysis( const TE_NODE *node, int argc, const char **argv );
+int proc_tst_nbi( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_misc( const TE_NODE *node, int argc, const char **argv );
 
 #endif
