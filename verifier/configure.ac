@@ -29,6 +29,12 @@ AC_CHECK_LIB([oshmem], [shmem_getmem_nbi],
     ],
     [AM_CONDITIONAL([HAVE_NBI],[false])])
 
+dnl Check oshmem alltoall
+AC_CHECK_DECLS([shmem_alltoall32, shmem_alltoall64],
+    [AM_CONDITIONAL([HAVE_ALLTOALL],[true])
+     CFLAGS="$CFLAGS -DHAVE_ALLTOALL"
+    ],
+    [AM_CONDITIONAL([HAVE_ALLTOALL],[false])], [#include "shmem.h"])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

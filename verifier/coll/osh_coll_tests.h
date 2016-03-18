@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014      Mellanox Technologies, Inc.
+ * Copyright (c) 2014-2016 Mellanox Technologies, Inc.
  *                         All rights reserved.
  * $COPYRIGHT$
  *
@@ -21,5 +21,7 @@ int osh_coll_tc7( const TE_NODE *, int, const char ** );
 int osh_coll_tc8( const TE_NODE *, int, const char ** );
 int osh_coll_tc9( const TE_NODE *, int, const char ** );
 int osh_coll_tc10( const TE_NODE *, int, const char ** );
+int osh_coll_tc11( const TE_NODE *, int, const char ** );
+int osh_coll_tc12( const TE_NODE *, int, const char ** );
 
 #endif
