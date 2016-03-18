@@ -242,6 +242,11 @@ if HAVE_NBI
 oshmem_test_SOURCES += \
 	nbi/osh_nbi_tc1.c \
 	nbi/osh_nbi_tc2.c
+
+if HAVE_ALLTOALL
+oshmem_test_SOURCES += \
+	coll/osh_coll_tc11.c \
+	coll/osh_coll_tc12.c
 endif
 
 clean-local:
