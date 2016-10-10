@@ -77,7 +77,7 @@ static int test_item1(void)
         for (j = 0; j < NPUTS; j++)
         {
             peer = rand() % num_proc;
-            shmem_put(test_array, local_array, NNUM, peer);
+            shmem_long_put(test_array, local_array, NNUM, peer);
         }
         shmem_fence();
         shmem_barrier_all();

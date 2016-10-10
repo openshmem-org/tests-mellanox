@@ -170,7 +170,7 @@ static int test_item3(void)
             shmem_quiet();
         }
 
-        shmem_put(&test_variable, &me, 1, 1);
+        shmem_long_put(&test_variable, &me, 1, 1);
     }
 
     shfree(test_array);
