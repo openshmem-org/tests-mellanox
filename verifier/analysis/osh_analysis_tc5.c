@@ -23,7 +23,7 @@
 static int test_item1(void);
 
 #define TYPE_VALUE  int64_t
-#define FUNC_VALUE  shmem_put
+#define FUNC_VALUE  shmem_put64
 #define SIZE_VALUE  sizeof(TYPE_VALUE)
 
 

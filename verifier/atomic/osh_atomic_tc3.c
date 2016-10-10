@@ -15,12 +15,25 @@
 
 #include "osh_atomic_tests.h"
 
+/* Check SHMEM API version */
+#if defined(SHMEM_MAJOR_VERSION) && (SHMEM_MAJOR_VERSION == 1) && defined(SHMEM_MINOR_VERSION) && (SHMEM_MINOR_VERSION > 2)
+#define SKIP 1
+#endif
+
+
 /****************************************************************************
  * Test Case can consitis of different number of separate items
  * it is recommended to form every item as function
  ***************************************************************************/
+#if !defined(SKIP)
 static int test_item1(void);
 static int test_item2(void);
+
+static long __cycle_count = COUNT_VALUE;
+#else
+static int test_item1(void) {return TC_PASS;}
+static int test_item2(void) {return TC_PASS;}
+#endif /* SKIP */
 
 
 #define TYPE_VALUE  long
@@ -28,7 +41,6 @@ static int test_item2(void);
 #define DEFAULT_VALUE  (-1)
 #define COUNT_VALUE 100
 
-static long __cycle_count = COUNT_VALUE;
 
 
 /****************************************************************************
@@ -58,7 +70,7 @@ int osh_atomic_tc3(const TE_NODE *node, int argc, const char *argv[])
     return rc;
 }
 
-
+#if !defined(SKIP)
 /****************************************************************************
  * Place for Test Item functions
  ***************************************************************************/
@@ -210,3 +222,5 @@ static int test_item2(void)
 
     return rc;
 }
+
+#endif /* SKIP */
