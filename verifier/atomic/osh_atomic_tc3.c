@@ -28,8 +28,6 @@
 #if !defined(SKIP)
 static int test_item1(void);
 static int test_item2(void);
-
-static long __cycle_count = COUNT_VALUE;
 #else
 static int test_item1(void) {return TC_PASS;}
 static int test_item2(void) {return TC_PASS;}
@@ -41,6 +39,9 @@ static int test_item2(void) {return TC_PASS;}
 #define DEFAULT_VALUE  (-1)
 #define COUNT_VALUE 100
 
+#if !defined(SKIP)
+static long __cycle_count = COUNT_VALUE;
+#endif /* SKIP */
 
 
 /****************************************************************************
