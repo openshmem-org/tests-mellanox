@@ -154,10 +154,8 @@ static int test_item1(void)
                         }
                     }
                 }
-                report_end = sys_gettime();
-
                 shmem_barrier_all();
-
+                report_end = sys_gettime();
                 /* Check result */
                 {
                     pe_proc = 0;
