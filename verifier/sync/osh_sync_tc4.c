@@ -43,7 +43,7 @@ int osh_sync_tc4(const TE_NODE *node, int argc, const char *argv[])
     UNREFERENCED_PARAMETER(argc);
     UNREFERENCED_PARAMETER(argv);
 
-    pSync = shmalloc(sizeof(*pSync) * _SHMEM_BCAST_SYNC_SIZE);
+    pSync = shmalloc(sizeof(*pSync) * _SHMEM_BARRIER_SYNC_SIZE);
     if (!pSync)
     {
         rc = TC_SETUP_FAIL;
