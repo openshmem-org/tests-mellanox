@@ -28,6 +28,7 @@ static int test_64bit_align(void);
 static int test_memalign(void);
 static int test_realloc(void);
 static int test_addr_accessible(void);
+static int test_shmem_ptr();
 static int test_allocation_size(void);
 static int test_global_vars(void);
 static int test_max_size(void);
@@ -140,6 +141,12 @@ int osh_basic_tc3(const TE_NODE *node, int argc, const char *argv[])
     {
         rc = test_item4();
         log_item(node, 11, rc);
+    }
+
+    if (rc == TC_PASS)
+    {
+        rc = test_shmem_ptr();
+        log_item(node, 12, rc);
     }
 
     return rc;
@@ -452,6 +459,46 @@ static int test_addr_accessible()
    shfree(p1);
    return TC_PASS;
 
+}
+
+
+static int test_shmem_ptr()
+{
+    int my_pe = _my_pe();
+    int n_pes = _num_pes();
+    static int foo;
+    int *ptr;
+    int *pdata;
+    int i;
+
+    pdata = (int *)shmalloc(5678);
+    foo = my_pe;
+    *pdata = my_pe;
+    shmem_barrier_all();
+
+    /* if shmem_ptr is implemented it must return a pointer to
+     * the remote variable which holds a remote pe number
+     */
+    for (i = 0; i < n_pes; i++) {
+        ptr = shmem_ptr(&foo, i);
+        if (ptr) {
+            log_debug(OSH_TC, "%d: shmem_ptr(static=%p, dst=%d) = %p, val=%d\n", my_pe, &foo, i, ptr, *ptr);
+            if (*ptr != i)
+                goto fail;
+        }
+        ptr = shmem_ptr(pdata, i);
+        if (ptr) {
+            log_debug(OSH_TC, "%d: shmem_ptr(heap=%p, dst=%d) = %p, val=%d\n", my_pe, pdata, i, ptr, *ptr);
+            if (*ptr != i)
+                goto fail;
+        }
+    }
+
+    shfree(pdata);
+    return TC_PASS;
+fail:
+    shfree(pdata);
+    return TC_FAIL;
 }
 
 static int test_max_size(void)
