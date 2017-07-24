@@ -141,10 +141,14 @@ static int test_item3(void)
 
 static int test_shmem_ptr()
 {
-    static int foo; 
+    int *ptr;
+    static int foo = 0xdeadbeef;
 
-    /* function is not available in our implementation */
-    return 0 == shmem_ptr(&foo, 0) ? TC_PASS : TC_FAIL;
+    ptr = shmem_ptr(&foo, 0);
+
+    log_debug(OSH_TC, "%d: ptr %p foo %p val %x\n", _my_pe(), ptr, &foo, ptr ? *ptr : 0);
+
+    return (ptr == NULL || *ptr == 0xdeadbeef) ? TC_PASS : TC_FAIL;
 }
 
 static int test_shmem_accessible()
