@@ -30,7 +30,7 @@ static int test_item7(void);
 
 #define WAIT_COUNT  5
 #define TYPE_VALUE  int64_t
-#define FUNC_VALUE  shmem_broadcast
+#define FUNC_VALUE  shmem_broadcast64
 #define SIZE_VALUE  sizeof(TYPE_VALUE)
 #define MAX_VALUE   (((unsigned long long)1 << ( 8 * SIZE_VALUE - 1)) - 1)
 #define BASE_VALUE  8

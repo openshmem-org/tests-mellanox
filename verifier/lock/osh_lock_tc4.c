@@ -49,7 +49,7 @@ static int mca_atomic_basic_init(int enable_progress_threads,
 {
     int rc = OSHMEM_SUCCESS;
     void* ptr = NULL;
-    int num_pe = num_pes();
+    int num_pe = _num_pes();
 
     UNREFERENCED_PARAMETER(enable_progress_threads);
     UNREFERENCED_PARAMETER(enable_threads);
@@ -117,7 +117,7 @@ static void atomic_basic_lock(int pe)
 {
     int index = -1;
     int me = shmem_my_pe();
-    int num_pe = num_pes();
+    int num_pe = _num_pes();
     char lock_required = ATOMIC_LOCK_WAITING;
     char lock_active = ATOMIC_LOCK_ACTIVE;
     int root_pe = pe;
@@ -174,7 +174,7 @@ static void atomic_basic_unlock(int pe)
 {
     int index = -1;
     int me = shmem_my_pe();
-    int num_pe = num_pes();
+    int num_pe = _num_pes();
     char lock_idle = ATOMIC_LOCK_IDLE;
     int root_pe = pe;
 
@@ -235,7 +235,7 @@ int osh_lock_tc4(const TE_NODE *node, int argc, const char *argv[])
 static int test_item1()
 {
     int me = shmem_my_pe();
-    int num_pe = num_pes();
+    int num_pe = _num_pes();
     int res = TC_PASS;
     int writer = 0;
     const int number_of_iterations = 2; //num_pe - 1;
