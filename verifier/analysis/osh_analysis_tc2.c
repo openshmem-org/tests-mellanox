@@ -12,7 +12,6 @@
 #include "osh_log.h"
 
 #include "shmem.h"
-#include "mpi.h"
 
 #include "osh_analysis.h"
 
