@@ -49,7 +49,7 @@ static int memheap_type(void)
     if (memheap_type != MEMHEAP_ALLOC_UNKNOWN)
         return memheap_type;
 
-    p = getenv(SHMEM_HEAP_TYPE);
+    p = getenv("SHMEM_HEAP_TYPE");
     if (p)
     {
         log_debug(OSH_TC, "heap allocator is %s\n", p);

@@ -406,7 +406,7 @@ unsigned long long memheap_size (void) {
     int idx;
     unsigned long long size;
 
-    p = getenv(SHMEM_HEAP_SIZE);
+    p = getenv("SHMEM_HEAP_SIZE");
     if (!p) {
         return (SIZE_IN_MEGA_BYTES (DEFAULT_SYMMETRIC_HEAP_SIZE));
     }
