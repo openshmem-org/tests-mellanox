@@ -43,7 +43,7 @@ int osh_coll_tc11(const TE_NODE *node, int argc, const char *argv[])
 
     if (rc == TC_PASS)
     {
-        pSync = shmalloc(sizeof(*pSync) * _SHMEM_ALLTOALL_SYNC_SIZE);
+        pSync = shmalloc(sizeof(*pSync) * SHMEM_ALLTOALL_SYNC_SIZE);
         if (!pSync)
         {
             rc = TC_SETUP_FAIL;
@@ -101,7 +101,7 @@ static int test_item1(void)
     }
 
     /* This guarantees that PE set initial value before peer change one */
-    for ( i = 0; i < _SHMEM_ALLTOALL_SYNC_SIZE; i++ )
+    for ( i = 0; i < SHMEM_ALLTOALL_SYNC_SIZE; i++ )
     {
         pSync[i] = _SHMEM_SYNC_VALUE;
     }
@@ -154,7 +154,7 @@ static int test_item2(void)
     }
 
     /* This guarantees that PE set initial value before peer change one */
-    for ( i = 0; i < _SHMEM_ALLTOALL_SYNC_SIZE; i++ )
+    for ( i = 0; i < SHMEM_ALLTOALL_SYNC_SIZE; i++ )
     {
         pSync[i] = _SHMEM_SYNC_VALUE;
     }
