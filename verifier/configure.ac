@@ -39,5 +39,11 @@ AC_CHECK_DECLS([shmem_alltoall32, shmem_alltoall64],
     ],
     [AM_CONDITIONAL([HAVE_ALLTOALL],[false])], [#include "shmem.h"])
 
+AC_ARG_ENABLE([mix],
+    [AC_HELP_STRING([--enable-mix],
+    [Enable OPENSHMEM+MPI mixed tests (default: enabled)])])
+AS_IF([test "$enable_mix" = "yes"], [AC_DEFINE([ENABLE_MIX], [1], [Enable mix tests])])
+AM_CONDITIONAL([ENABLE_MIX], [test "$enable_mix" = "yes"])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
