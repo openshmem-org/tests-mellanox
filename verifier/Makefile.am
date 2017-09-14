@@ -245,7 +245,7 @@ oshmem_test_SOURCES += \
 	coll/osh_coll_tc12.c
 endif
 
-if ENABLE_MIX
+if ENABLE_MPI
 noinst_HEADERS += \
 	mix/osh_mix.h
 
