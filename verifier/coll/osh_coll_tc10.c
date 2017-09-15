@@ -28,7 +28,6 @@ static int test_item6(void);
 static int test_item7(void);
 
 
-#define WAIT_COUNT  5
 #define TYPE_VALUE  int64_t
 #define FUNC_VALUE  shmem_broadcast64
 #define SIZE_VALUE  sizeof(TYPE_VALUE)
@@ -78,7 +77,7 @@ int osh_coll_tc10(const TE_NODE *node, int argc, const char *argv[])
 
     if (rc == TC_PASS)
     {
-        pSync = shmalloc(sizeof(*pSync) * _SHMEM_COLLECT_SYNC_SIZE);
+        pSync = shmalloc(sizeof(*pSync) * _SHMEM_BCAST_SYNC_SIZE);
         if (!pSync)
         {
             rc = TC_SETUP_FAIL;
@@ -164,9 +163,11 @@ static int test_item1(void)
     TYPE_VALUE peer_value = 0;
     TYPE_VALUE expect_value = 0;
     int my_proc = 0;
+    int num_proc = 0;
     int root_proc = 0;
 
     my_proc = _my_pe();
+    num_proc = _num_pes();
 
     shmem_addr = shmalloc(sizeof(*shmem_addr));
     send_addr = shmalloc(sizeof(*send_addr));
@@ -179,45 +180,42 @@ static int test_item1(void)
         my_value = DEFAULT_VALUE;
         *shmem_addr = my_value;
 
-        /* Define peer and it value */
-        peer_value = BASE_VALUE;
-        *send_addr = peer_value;
-
-        /* Set root */
-        root_proc = my_proc;
-
-        /* Define expected value */
-        expect_value = DEFAULT_VALUE;
-
         /* This guarantees that PE set initial value before peer change one */
-        for ( j = 0; j < _SHMEM_COLLECT_SYNC_SIZE; j++ )
+        for ( j = 0; j < _SHMEM_BCAST_SYNC_SIZE; j++ )
         {
             pSync[j] = _SHMEM_SYNC_VALUE;
         }
         shmem_barrier_all();
 
-        /* Put value to peer */
-        FUNC_VALUE(shmem_addr, send_addr, 1, root_proc, root_proc, 0, 1, pSync);
-
-        /* Get value put by peer:
-         * These routines start the remote transfer and may return before the data
-         * is delivered to the remote PE
-         */
-        shmem_barrier_all();
+        for ( j = 0; j < num_proc; j++ )
         {
-            int wait = WAIT_COUNT;
+            /* Set root */
+            root_proc = j;
 
-            while (wait--)
-            {
-                sleep(1);
+            /* Define send value */
+            *send_addr = (TYPE_VALUE)j;
+
+            /* Define expected value */
+            expect_value = (TYPE_VALUE)j;
+
+            /* Put value to peer */
+            if (my_proc >= root_proc) {
+                FUNC_VALUE(shmem_addr, send_addr, 1, 0, j, 0, num_proc-j, pSync);
             }
+
+            /* Get value put by peer:
+             * These routines start the remote transfer and may return before the data
+             * is delivered to the remote PE
+             */
+            shmem_barrier_all();
             value = *shmem_addr;
+
+            if (my_proc > root_proc) {
+                rc = (expect_value == value ? TC_PASS : TC_FAIL);
+                log_debug(OSH_TC, "my#%d root(#%d:%lld) expected = %lld actual = %lld\n",
+                          my_proc, root_proc, (INT64_TYPE)peer_value, (INT64_TYPE)expect_value, (INT64_TYPE)value);
+            }
         }
-
-        rc = (expect_value == value ? TC_PASS : TC_FAIL);
-
-        log_debug(OSH_TC, "my#%d root(#%d:%lld) expected = %lld actual = %lld\n",
-                           my_proc, root_proc, (INT64_TYPE)peer_value, (INT64_TYPE)expect_value, (INT64_TYPE)value);
     }
     else
     {
@@ -275,7 +273,7 @@ static int test_item2(void)
         expect_value = (my_proc == root_proc ? DEFAULT_VALUE : BASE_VALUE);
 
         /* This guarantees that PE set initial value before peer change one */
-        for ( j = 0; j < _SHMEM_COLLECT_SYNC_SIZE; j++ )
+        for ( j = 0; j < _SHMEM_BCAST_SYNC_SIZE; j++ )
         {
             pSync[j] = _SHMEM_SYNC_VALUE;
         }
@@ -289,16 +287,7 @@ static int test_item2(void)
          * is delivered to the remote PE
          */
         shmem_barrier_all();
-        {
-            int wait = WAIT_COUNT;
-
-            while (wait--)
-            {
-                value = *shmem_addr;
-                if (expect_value == value) break;
-                sleep(1);
-            }
-        }
+        value = *shmem_addr;
 
         rc = (expect_value == value ? TC_PASS : TC_FAIL);
 
@@ -361,7 +350,7 @@ static int test_item3(void)
         expect_value = (my_proc == root_proc ? DEFAULT_VALUE : BASE_VALUE);
 
         /* This guarantees that PE set initial value before peer change one */
-        for ( j = 0; j < _SHMEM_COLLECT_SYNC_SIZE; j++ )
+        for ( j = 0; j < _SHMEM_BCAST_SYNC_SIZE; j++ )
         {
             pSync[j] = _SHMEM_SYNC_VALUE;
         }
@@ -375,16 +364,7 @@ static int test_item3(void)
          * is delivered to the remote PE
          */
         shmem_barrier_all();
-        {
-            int wait = WAIT_COUNT;
-
-            while (wait--)
-            {
-                value = *shmem_addr;
-                if (expect_value == value) break;
-                sleep(1);
-            }
-        }
+        value = *shmem_addr;
 
         rc = (expect_value == value ? TC_PASS : TC_FAIL);
 
@@ -447,7 +427,7 @@ static int test_item4(void)
         expect_value = (((my_proc % 2) == 0) && (my_proc != 0) ? BASE_VALUE : DEFAULT_VALUE);
 
         /* This guarantees that PE set initial value before peer change one */
-        for ( j = 0; j < _SHMEM_COLLECT_SYNC_SIZE; j++ )
+        for ( j = 0; j < _SHMEM_BCAST_SYNC_SIZE; j++ )
         {
             pSync[j] = _SHMEM_SYNC_VALUE;
         }
@@ -464,16 +444,7 @@ static int test_item4(void)
          * is delivered to the remote PE
          */
         shmem_barrier_all();
-        {
-            int wait = WAIT_COUNT;
-
-            while (wait--)
-            {
-                value = *shmem_addr;
-                if (expect_value == value) break;
-                sleep(1);
-            }
-        }
+        value = *shmem_addr;
 
         rc = (expect_value == value ? TC_PASS : TC_FAIL);
 
@@ -545,7 +516,7 @@ static int test_item5(void)
             expect_value = (((my_proc % 2) == 0) && (my_proc != root_proc) ? peer_value : DEFAULT_VALUE);
 
             /* This guarantees that PE set initial value before peer change one */
-            for ( j = 0; j < _SHMEM_COLLECT_SYNC_SIZE; j++ )
+            for ( j = 0; j < _SHMEM_BCAST_SYNC_SIZE; j++ )
             {
                 pSync[j] = _SHMEM_SYNC_VALUE;
             }
@@ -562,16 +533,7 @@ static int test_item5(void)
              * is delivered to the remote PE
              */
             shmem_barrier_all();
-            {
-                int wait = WAIT_COUNT;
-
-                while (wait--)
-                {
-                    value = *shmem_addr;
-                    if (expect_value == value) break;
-                    sleep(1);
-                }
-            }
+            value = *shmem_addr;
 
             rc = (!compare_buffer_with_const(shmem_addr, cur_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
 
@@ -653,7 +615,7 @@ static int test_item6(void)
             expect_value = (((my_proc % 2) == 0) && (my_proc != root_proc) ? peer_value : DEFAULT_VALUE);
 
             /* This guarantees that PE set initial value before peer change one */
-            for ( j = 0; j < _SHMEM_COLLECT_SYNC_SIZE; j++ )
+            for ( j = 0; j < _SHMEM_BCAST_SYNC_SIZE; j++ )
             {
                 pSync[j] = _SHMEM_SYNC_VALUE;
             }
@@ -670,16 +632,7 @@ static int test_item6(void)
              * is delivered to the remote PE
              */
             shmem_barrier_all();
-            {
-                int wait = WAIT_COUNT;
-
-                while (wait--)
-                {
-                    value = *shmem_addr;
-                    if (expect_value == value) break;
-                    sleep(1);
-                }
-            }
+            value = *shmem_addr;
 
             rc = (!compare_buffer_with_const(shmem_addr, cur_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
 
@@ -721,7 +674,7 @@ static int test_item7(void)
     num_proc = _num_pes();
     my_proc = _my_pe();
 
-    pSyncMult = shmalloc(sizeof(*pSyncMult) * pSyncNum * _SHMEM_COLLECT_SYNC_SIZE);
+    pSyncMult = shmalloc(sizeof(*pSyncMult) * pSyncNum * _SHMEM_BCAST_SYNC_SIZE);
     if (!pSyncMult)
     {
         rc = TC_SETUP_FAIL;
@@ -732,7 +685,7 @@ static int test_item7(void)
         int i = 0;
         int j = 0;
 
-        for ( j = 0; j < pSyncNum * _SHMEM_COLLECT_SYNC_SIZE; j++ )
+        for ( j = 0; j < pSyncNum * _SHMEM_BCAST_SYNC_SIZE; j++ )
         {
             pSyncMult[j] = _SHMEM_SYNC_VALUE;
         }
@@ -753,7 +706,7 @@ static int test_item7(void)
         for (i = 0; (i < __cycle_count) && (rc == TC_PASS); i++)
         {
             /* Put value to peer */
-            FUNC_VALUE(shmem_addr + (i % 2) * MAX_BUFFER_SIZE, send_addr + (i % 2) * MAX_BUFFER_SIZE, MAX_BUFFER_SIZE, root_proc, 0, 0, num_proc, pSyncMult + (i % pSyncNum) * _SHMEM_COLLECT_SYNC_SIZE);
+            FUNC_VALUE(shmem_addr + (i % 2) * MAX_BUFFER_SIZE, send_addr + (i % 2) * MAX_BUFFER_SIZE, MAX_BUFFER_SIZE, root_proc, 0, 0, num_proc, pSyncMult + (i % pSyncNum) * _SHMEM_BCAST_SYNC_SIZE);
             rc = (!compare_buffer_with_const(shmem_addr + (i % 2) * MAX_BUFFER_SIZE, MAX_BUFFER_SIZE, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
 
             log_debug(OSH_TC, "my#%d root(#%d:%lld) expected = %lld actual = %lld buffer size = %lld\n",
