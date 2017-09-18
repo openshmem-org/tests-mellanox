@@ -27,7 +27,11 @@ static int test_item1(void);
 #define TYPE_VALUE  short
 #define FUNC_VALUE  shmem_short_iput
 #define SIZE_VALUE  sizeof(TYPE_VALUE)
+#ifdef QUICK_TEST
+#define COUNT_VALUE 10
+#else
 #define COUNT_VALUE 100
+#endif
 #define MAX_ARRAY_SIZE  1000
 #define WAIT_LIMIT 5
 

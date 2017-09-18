@@ -28,7 +28,11 @@ static int test_item6(void);
 static int test_item7(void);
 
 
+#ifdef QUICK_TEST
+#define WAIT_COUNT  1
+#else
 #define WAIT_COUNT  5
+#endif
 #define TYPE_VALUE  int32_t
 #define FUNC_VALUE  shmem_collect32
 #define SIZE_VALUE  sizeof(TYPE_VALUE)

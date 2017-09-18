@@ -26,7 +26,11 @@ static int test_shmem_ptr(void);
 static int test_shmem_accessible(void);
 
 
+#ifdef QUICK_TEST
+#define LOOP_COUNT  100
+#else
 #define LOOP_COUNT  1000
+#endif
 
 
 /****************************************************************************

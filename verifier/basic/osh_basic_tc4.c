@@ -22,7 +22,11 @@
 static int test_item1(void);
 
 
+#ifdef QUICK_TEST
+#define WAIT_COUNT  1
+#else
 #define WAIT_COUNT  5
+#endif
 
 
 /****************************************************************************
