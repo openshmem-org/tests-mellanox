@@ -39,5 +39,11 @@ AC_CHECK_DECLS([shmem_alltoall32, shmem_alltoall64],
     ],
     [AM_CONDITIONAL([HAVE_ALLTOALL],[false])], [#include "shmem.h"])
 
+AC_ARG_ENABLE([active-sets],
+    [AC_HELP_STRING([--enable-active-sets],
+    [Enable checking whether PEs are within the active set before calling reductions (default: disabled)])])
+AS_IF([test "$enable_active_sets" = "yes"], [AC_DEFINE([CHECK_ACTIVE_SET], [1], [Enable active set check])], [])
+AM_CONDITIONAL([CHECK_ACTIVE_SET], [test "$enable_active_sets" = "yes"])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

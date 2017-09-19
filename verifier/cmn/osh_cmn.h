@@ -356,5 +356,7 @@ static INLINE unsigned sys_log2(unsigned long long val)
 
     return count > 0 ? count - 1 : 0;
 }
+
+int check_within_active_set(int PE_start, int logPE_stride, int PE_size, int my_pe, int num_pes);
 #endif /* _OSH_CMN_H_ */
 
