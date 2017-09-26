@@ -29,7 +29,11 @@ static int test_item3(void);
 #define FUNC_VALUE  shmem_short_p
 #define SIZE_VALUE  sizeof(TYPE_VALUE)
 #define MAX_VALUE   (((unsigned long long)1 << ( 8 * SIZE_VALUE - 1)) - 1)
+#ifdef QUICK_TEST
+#define COUNT_VALUE 10
+#else
 #define COUNT_VALUE 100
+#endif
 #define STEP_VALUE  (MAX_VALUE / COUNT_VALUE)
 
 
