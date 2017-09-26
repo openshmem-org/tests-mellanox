@@ -15,6 +15,10 @@
 
 #include "osh_coll_tests.h"
 
+#ifndef SHMEM_ALLTOALLS_SYNC_SIZE
+#define SHMEM_ALLTOALLS_SYNC_SIZE SHMEM_ALLTOALL_SYNC_SIZE
+#endif
+
 /****************************************************************************
  * Test Case can consists of different number of separate items
  * it is recommended to form every item as function
