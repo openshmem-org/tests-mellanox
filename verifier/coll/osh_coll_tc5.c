@@ -27,7 +27,11 @@ static int test_item5(void);
 static int test_item6(void);
 static int test_item7(void);
 
+#ifdef QUICK_TEST
+#define WAIT_COUNT  1
+#else
 #define WAIT_COUNT  5
+#endif
 #define TYPE_VALUE  int64_t
 #define FUNC_VALUE  shmem_collect64
 #define SIZE_VALUE  sizeof(TYPE_VALUE)
@@ -41,7 +45,11 @@ static int test_item7(void);
  */
 static int __parse_opt( const TE_NODE *, int, const char ** );
 
+#ifdef QUICK_TEST
+#define COUNT_VALUE 10
+#else
 #define COUNT_VALUE 100
+#endif
 #define MAX_BUFFER_SIZE 8096
 
 static long __max_buffer_size = MAX_BUFFER_SIZE;

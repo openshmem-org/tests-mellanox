@@ -37,7 +37,11 @@ static int test_item4(void);
  */
 static int __parse_opt( const TE_NODE *, int, const char ** );
 
+#ifdef QUICK_TEST
+#define COUNT_VALUE 10
+#else
 #define COUNT_VALUE 100
+#endif
 #define MAX_BUFFER_SIZE 8096
 
 static long __max_buffer_size = MAX_BUFFER_SIZE;

@@ -23,7 +23,11 @@
  ***************************************************************************/
 static int test_item1(void);
 
+#ifdef QUICK_TEST
+#define WAIT_COUNT  1
+#else
 #define WAIT_COUNT  5
+#endif
 #define TYPE_VALUE  unsigned char
 #define FUNC_VALUE  shmem_getmem_nbi
 #define SIZE_VALUE  sizeof(TYPE_VALUE)
