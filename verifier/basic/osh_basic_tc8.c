@@ -12,8 +12,13 @@
 #include "rnd_mt.h"
 #include "osh_basic_tests.h"
 
+#ifdef QUICK_TEST
+#define TABLE_LENGTH                        (10)
+#define ITERATIONS_CONST                    (2)
+#else
 #define TABLE_LENGTH                        (100)
 #define ITERATIONS_CONST                    (10)
+#endif
 #define PRETEST_CONST                       (4)
 #define POTENTIAL_MAX_SIZE(heap_size)       (heap_size/2)
 #define SHMEMALIGN_BOUNDRY                  (2)
@@ -142,6 +147,8 @@ static int stressing_shmalloc_test (void)
      * In the assumption, that smalloc can allocate memory that
      * is greater than set in environment variable by an user.
      */
+    printf("max_possible_alloc = %ld\n", max_possible_alloc);
+    printf("heap_size = %ld\n", heap_size);
     if (max_possible_alloc < heap_size) {
 #endif
         log_error(OSH_TC, "Maximum allocation size is %ld . exiting...\n",

@@ -9,7 +9,7 @@
  */
 
 #ifndef __OSH_SYNC_TESTS_H__
-#define __PSH_SYNC_TESTS_H__
+#define __OSH_SYNC_TESTS_H__
 
 int osh_sync_tc1( const TE_NODE *, int, const char ** );
 int osh_sync_tc2( const TE_NODE *, int, const char ** );
