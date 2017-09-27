@@ -27,7 +27,11 @@ static int test_item3(void);
 #define TYPE_VALUE  float
 #define FUNC_VALUE  shmem_float_swap
 #define DEFAULT_VALUE  (-1.0)
+#ifdef QUICK_TEST
+#define COUNT_VALUE 10
+#else
 #define COUNT_VALUE 100
+#endif
 
 static long __cycle_count = COUNT_VALUE;
 

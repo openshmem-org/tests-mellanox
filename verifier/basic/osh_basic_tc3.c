@@ -33,7 +33,11 @@ static int test_allocation_size(void);
 static int test_global_vars(void);
 static int test_max_size(void);
 
+#ifdef QUICK_TEST
+#define LOOP_COUNT  100
+#else
 #define LOOP_COUNT  1000
+#endif
 
 enum {
     MEMHEAP_ALLOC_UNKNOWN,

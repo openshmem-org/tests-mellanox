@@ -15,6 +15,10 @@
 
 #include "osh_basic_tests.h"
 
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+
 /****************************************************************************
  * Test Case can consitis of different number of separate items
  * it is recommended to form every item as function
@@ -22,7 +26,11 @@
 static int test_item1(void);
 
 
+#ifdef QUICK_TEST
+#define WAIT_COUNT  1
+#else
 #define WAIT_COUNT  5
+#endif
 
 
 /****************************************************************************
