@@ -24,11 +24,19 @@ static int test_item2(void);
 static int test_item3(void);
 
 
+#ifdef QUICK_TEST
+#define WAIT_COUNT  1
+#else
 #define WAIT_COUNT  5
+#endif
 #define TYPE_VALUE  long
 #define FUNC_VALUE  shmem_long_finc
 #define DEFAULT_VALUE  (-1)
+#ifdef QUICK_TEST
+#define COUNT_VALUE 10
+#else
 #define COUNT_VALUE 100
+#endif
 
 static long __cycle_count = COUNT_VALUE;
 

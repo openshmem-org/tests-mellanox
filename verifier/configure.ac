@@ -45,5 +45,11 @@ AC_ARG_ENABLE([active-sets],
 AS_IF([test "$enable_active_sets" = "yes"], [AC_DEFINE([CHECK_ACTIVE_SET], [1], [Enable active set check])], [])
 AM_CONDITIONAL([CHECK_ACTIVE_SET], [test "$enable_active_sets" = "yes"])
 
+AC_ARG_ENABLE([quick-tests],
+    [AC_HELP_STRING([--enable-quick-tests],
+    [Enable faster tests with fewer iterations/operations (default: disabled)])])
+AS_IF([test "$enable_quick_tests" = "yes"], [AC_DEFINE([QUICK_TEST], [1], [Enable quick tests])], [])
+AM_CONDITIONAL([QUICK_TEST], [test "$enable_quick_tests" = "yes"])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
