@@ -311,7 +311,7 @@ enum{
     PUT_COMPLETED
 };
 
-inline void do_progress(void)
+static inline void do_progress(void)
 {
 #if defined(HAVE_OPAL_PROGRESS)
 	extern void opal_progress(void);

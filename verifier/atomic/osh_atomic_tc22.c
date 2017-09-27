@@ -21,7 +21,11 @@
  ***************************************************************************/
 static int test_item1(void);
 
+#ifdef QUICK_TEST
+#define COUNT_VALUE 30
+#else
 #define COUNT_VALUE 300
+#endif
 #define CHECK_COUNT_VALUE 1
 
 /****************************************************************************
