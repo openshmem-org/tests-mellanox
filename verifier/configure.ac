@@ -45,5 +45,11 @@ AC_ARG_ENABLE([mpi],
 AS_IF([test "$enable_mpi" != "no"], [AC_DEFINE([ENABLE_MPI], [1], [Enable MPI mixed tests])])
 AM_CONDITIONAL([ENABLE_MPI], [test "$enable_mpi" != "no"])
 
+AC_ARG_ENABLE([quick-tests],
+    [AC_HELP_STRING([--enable-quick-tests],
+    [Enable faster tests with fewer iterations/operations (default: disabled)])])
+AS_IF([test "$enable_quick_tests" = "yes"], [AC_DEFINE([QUICK_TEST], [1], [Enable quick tests])], [])
+AM_CONDITIONAL([QUICK_TEST], [test "$enable_quick_tests" = "yes"])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

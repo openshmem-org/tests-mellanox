@@ -37,7 +37,11 @@ static int test_item2(void) {return TC_PASS;}
 #define TYPE_VALUE  long
 #define FUNC_VALUE  shmem_swap
 #define DEFAULT_VALUE  (-1)
+#ifdef QUICK_TEST
+#define COUNT_VALUE 10
+#else
 #define COUNT_VALUE 100
+#endif
 
 #if !defined(SKIP)
 static long __cycle_count = COUNT_VALUE;
