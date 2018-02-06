@@ -51,5 +51,11 @@ AC_ARG_ENABLE([quick-tests],
 AS_IF([test "$enable_quick_tests" = "yes"], [AC_DEFINE([QUICK_TEST], [1], [Enable quick tests])], [])
 AM_CONDITIONAL([QUICK_TEST], [test "$enable_quick_tests" = "yes"])
 
+AC_ARG_ENABLE([error],
+    [AC_HELP_STRING([--enable-error],
+    [Pass the -Werror flag to treat all warnings as errors (default: enabled)])])
+AS_IF([test "$enable_error" != "no"], [AC_DEFINE([ENABLE_ERROR], [1], [Pass -Werror])], [])
+AM_CONDITIONAL([ENABLE_ERROR], [test "$enable_error" != "no"])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
