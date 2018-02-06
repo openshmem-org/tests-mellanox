@@ -45,6 +45,12 @@ AC_ARG_ENABLE([active-sets],
 AS_IF([test "$enable_active_sets" = "yes"], [AC_DEFINE([CHECK_ACTIVE_SET], [1], [Enable active set check])], [])
 AM_CONDITIONAL([CHECK_ACTIVE_SET], [test "$enable_active_sets" = "yes"])
 
+AC_ARG_ENABLE([mpi],
+    [AC_HELP_STRING([--disable-mpi],
+    [Disable OPENSHMEM+MPI mixed tests (default: enabled)])])
+AS_IF([test "$enable_mpi" != "no"], [AC_DEFINE([ENABLE_MPI], [1], [Enable MPI mixed tests])])
+AM_CONDITIONAL([ENABLE_MPI], [test "$enable_mpi" != "no"])
+
 AC_ARG_ENABLE([quick-tests],
     [AC_HELP_STRING([--enable-quick-tests],
     [Enable faster tests with fewer iterations/operations (default: disabled)])])
