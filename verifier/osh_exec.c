@@ -23,7 +23,9 @@ extern const TE_NODE lock_tcs[];
 extern const TE_NODE reduce_tcs[];
 extern const TE_NODE sync_tcs[];
 extern const TE_NODE strided_tcs[];
+#ifdef ENABLE_MPI
 extern const TE_NODE mix_tcs[];
+#endif
 extern const TE_NODE analysis_tcs[];
 extern const TE_NODE nbi_tcs[];
 extern const TE_NODE misc_tcs[];
@@ -40,7 +42,9 @@ const TE_NODE exec_tst[] =
    { reduce_tcs,    proc_tst_reduce,    "reduce",   aopt_set_string( "rd" ),    "Run " MODULE_NAME " REDUCTION test suite.", TEST_RUN},
    { sync_tcs,      proc_tst_sync,      "sync",     aopt_set_string( "sc" ),    "Run " MODULE_NAME " SYNCHRONIZATION test suite.", TEST_RUN},
    { strided_tcs,   proc_tst_strided,   "stride",   aopt_set_string( "st" ),    "Run " MODULE_NAME " STRIDED test suite.", TEST_RUN},
+#ifdef ENABLE_MPI
    { mix_tcs,       proc_tst_mix,       "mix",      aopt_set_string( "mx" ),    "Run " MODULE_NAME " MIX test suite.", TEST_RUN},
+#endif
    { analysis_tcs,  proc_tst_analysis,  "analysis", aopt_set_string( "an" ),    "Run " MODULE_NAME " ANALYSIS test suite.", TEST_IGNORE},
    { nbi_tcs,       proc_tst_nbi,       "nbi",      aopt_set_string( "nb" ),    "Run " MODULE_NAME " NB DATA Transfer test suite.", TEST_RUN},
    { misc_tcs,      proc_tst_misc,      "misc",     aopt_set_string( "ms" ),    "Run " MODULE_NAME " AUX test suite.", TEST_RUN},
