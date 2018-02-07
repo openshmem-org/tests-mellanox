@@ -25,7 +25,11 @@ bin_PROGRAMS = oshmem_test
 lib_LIBRARIES = liboshmem_basic_tc3.a
 liboshmem_basic_tc3_a_SOURCES = basic/osh_basic_tc3_lib.c
 
-oshmem_test_CFLAGS =  $(CFLAGS) -Werror -Wall -D__LINUX__ \
+if ENABLE_ERROR
+ERROR_FLAG = -Werror
+endif
+
+oshmem_test_CFLAGS =  $(CFLAGS) $(ERROR_FLAG) -Wall -D__LINUX__ \
 					  -I. \
 					  -I$(top_srcdir) \
 					  -I$(top_srcdir)/cmn
