@@ -24,6 +24,7 @@ static int test_item1(void);
 static int test_item2(void);
 #endif
 static int test_item3(void);
+static int test_group_cache(void);
 
 
 #define WAIT_SEC      1
@@ -72,6 +73,13 @@ int osh_sync_tc4(const TE_NODE *node, int argc, const char *argv[])
     {
         rc = test_item3();
         log_item(node, 3, rc);
+        shmem_barrier_all();
+    }
+
+    if (rc == TC_PASS)
+    {
+        rc = test_group_cache();
+        log_item(node, 4, rc);
         shmem_barrier_all();
     }
 
@@ -240,4 +248,76 @@ static int test_item3(void)
     }
 
     return rc;
+}
+
+static int test_group(int start_pe, int pe_size)
+{
+    long *pSync = shmalloc(sizeof(*pSync) * _SHMEM_BARRIER_SYNC_SIZE);
+    int my_proc = _my_pe();
+    int i;
+
+    if (!pSync)
+    {
+        return TC_FAIL;
+    }
+
+    for ( i = 0; i < _SHMEM_BARRIER_SYNC_SIZE; i++ )
+    {
+        pSync[i] = _SHMEM_SYNC_VALUE;
+    }
+    shmem_barrier_all();
+
+    /* skip barrier if not in the group because according to spec
+     * the behaviour is not defined
+     */
+    if ((my_proc < start_pe) || (my_proc > start_pe + pe_size))
+    {
+        goto done;
+    }
+
+    for (i = 0; i < 10; i ++)
+    {
+        shmem_barrier(start_pe, 0, pe_size, pSync);
+    }
+
+done:
+    shfree(pSync);
+    return TC_PASS;
+}
+
+/* check that shmem can handle 10k groups */
+static int test_group_cache(void)
+{
+    int start_pe, end_pe;
+    int num_procs;
+    int rc;
+    int grp_count = 0;
+
+    num_procs = shmem_n_pes();
+
+    if (num_procs < 2)
+    {
+        return TC_PASS;
+    }
+
+    for (end_pe = num_procs - 1; end_pe > 0; end_pe--)
+    {
+        for (start_pe = 0; start_pe < end_pe; start_pe++)
+        {
+            log_trace(OSH_TC, "group: %d,%d\n", start_pe, end_pe);
+            rc = test_group(start_pe, end_pe - start_pe + 1);
+            if (rc != TC_PASS)
+            {
+                return rc;
+            }
+            grp_count ++;
+            if (grp_count > 10000) {
+                goto out;
+            }
+        }
+    }
+
+out:
+    log_trace(OSH_TC, "created %d groups\n", grp_count);
+    return TC_PASS;
 }
