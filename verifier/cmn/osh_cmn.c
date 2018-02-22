@@ -435,13 +435,17 @@ int check_within_active_set(int PE_start, int logPE_stride, int PE_size, int my_
 {
 #ifdef CHECK_ACTIVE_SET
     int shmem_err_check_active_stride = 1 << logPE_stride;
-    if (PE_start < 0 || logPE_stride < 0 || PE_size < 0 || \
-        PE_start + (PE_size - 1) * shmem_err_check_active_stride > num_pes) {
+    if (logPE_stride >= sizeof(int) * 8 - 1) {
+        log_error(OSH_TC, "logPE_stride is too large\n");
         return 0;
     }
-    if (! (my_pe >= PE_start && \
-           my_pe <= PE_start + (PE_size-1) * shmem_err_check_active_stride && \
-           (my_pe - PE_start) % shmem_err_check_active_stride == 0)) {
+    if ((PE_start < 0) || (logPE_stride < 0) || (PE_size < 0) || \
+        (PE_start + (PE_size - 1) * shmem_err_check_active_stride > num_pes)) {
+        return 0;
+    }
+    if (! ((my_pe >= PE_start) && \
+           (my_pe <= PE_start + (PE_size-1) * shmem_err_check_active_stride) && \
+           ((my_pe - PE_start) % shmem_err_check_active_stride == 0))) {
         return 0;
     }
     return 1;
