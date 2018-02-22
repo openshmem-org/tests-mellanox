@@ -811,8 +811,12 @@ static int test_item7(void)
                 }
                 shmem_barrier_all();
 
-                /* Put value to peer */
-                FUNC_VALUE(target_addr, source_addr, cur_buf_size, 0, 1, ((num_proc / 2) + (num_proc % 2)), pWrk, pSync);
+                int in_active_set = check_within_active_set(0, 1, ((num_proc / 2) + (num_proc % 2)), my_proc, num_proc);
+
+                if ( in_active_set ) {
+                    /* Put value to peer */
+                    FUNC_VALUE(target_addr, source_addr, cur_buf_size, 0, 1, ((num_proc / 2) + (num_proc % 2)), pWrk, pSync);
+                }
 
                 /* Get value put by peer:
                  * These routines start the remote transfer and may return before the data
@@ -830,23 +834,24 @@ static int test_item7(void)
                     }
                 }
 
-                rc = (!compare_buffer_with_const(target_addr, cur_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
+                if ( in_active_set ) {
+                    rc = (!compare_buffer_with_const(target_addr, cur_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
 
-                log_debug(OSH_TC, "my#%d source = %Lf expected = %Lf actual = %Lf buffer size = %lld\n",
-                                   my_proc, (long double)source_value, (long double)expect_value, (long double)value, (INT64_TYPE)cur_buf_size);
+                    log_debug(OSH_TC, "my#%d source = %Lf expected = %Lf actual = %Lf buffer size = %lld\n",
+                                       my_proc, (long double)source_value, (long double)expect_value, (long double)value, (INT64_TYPE)cur_buf_size);
 
-                if (rc)
-                {
-                    TYPE_VALUE* check_addr = target_addr;
-                    int odd_index = compare_buffer_with_const(check_addr, cur_buf_size, &expect_value, sizeof(expect_value));
-                    int show_index = (odd_index > 1 ? odd_index - 2 : 0);
-                    int show_size = sizeof(*check_addr) * sys_min(3, cur_buf_size - odd_index - 1);
+                    if (rc)
+                    {
+                        TYPE_VALUE* check_addr = target_addr;
+                        int odd_index = compare_buffer_with_const(check_addr, cur_buf_size, &expect_value, sizeof(expect_value));
+                        int show_index = (odd_index > 1 ? odd_index - 2 : 0);
+                        int show_size = sizeof(*check_addr) * sys_min(3, cur_buf_size - odd_index - 1);
 
-                    log_debug(OSH_TC, "index of incorrect value: 0x%08X (%d)\n", odd_index - 1, odd_index - 1);
-                    log_debug(OSH_TC, "buffer interval: 0x%08X - 0x%08X\n", show_index, show_index + show_size);
-                    show_buffer(check_addr + show_index, show_size);
+                        log_debug(OSH_TC, "index of incorrect value: 0x%08X (%d)\n", odd_index - 1, odd_index - 1);
+                        log_debug(OSH_TC, "buffer interval: 0x%08X - 0x%08X\n", show_index, show_index + show_size);
+                        show_buffer(check_addr + show_index, show_size);
+                    }
                 }
-
                 shfree(pWrk);
             } else {
                 rc = TC_SETUP_FAIL;
@@ -935,26 +940,30 @@ static int test_item8(void)
                     }
                 }
 
-                /* Put value to peer */
-                FUNC_VALUE(target_addr + (i % 2) * MAX_BUFFER_SIZE, source_addr + (i % 2) * MAX_BUFFER_SIZE, cur_buf_size, 0, 1, ((num_proc / 2) + (num_proc % 2)), pWrkMult + (i % pWrkNum) * sys_max(MAX_BUFFER_SIZE, _SHMEM_REDUCE_MIN_WRKDATA_SIZE),  pSyncMult + (i % pSyncNum) * _SHMEM_REDUCE_SYNC_SIZE);
-                rc = (!compare_buffer_with_const(target_addr + (i % 2) * MAX_BUFFER_SIZE, cur_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
+                int in_active_set = check_within_active_set(0, 1, ((num_proc / 2) + (num_proc % 2)), my_proc, num_proc);
 
-                log_debug(OSH_TC, "my#%d source = %Lf expected = %Lf actual = %Lf buffer size = %lld\n",
-                                   my_proc, (long double)source_value, (long double)expect_value, (long double)value, (INT64_TYPE)cur_buf_size);
+                if ( in_active_set ) {
+                    /* Put value to peer */
+                    FUNC_VALUE(target_addr + (i % 2) * MAX_BUFFER_SIZE, source_addr + (i % 2) * MAX_BUFFER_SIZE, cur_buf_size, 0, 1, ((num_proc / 2) + (num_proc % 2)), pWrkMult + (i % pWrkNum) * sys_max(MAX_BUFFER_SIZE, _SHMEM_REDUCE_MIN_WRKDATA_SIZE),  pSyncMult + (i % pSyncNum) * _SHMEM_REDUCE_SYNC_SIZE);
+                    rc = (!compare_buffer_with_const(target_addr + (i % 2) * MAX_BUFFER_SIZE, cur_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
 
-                if (rc)
-                {
-                    TYPE_VALUE* check_addr = target_addr + (i % 2) * MAX_BUFFER_SIZE;
-                    int odd_index = compare_buffer_with_const(check_addr, cur_buf_size, &expect_value, sizeof(expect_value));
-                    int show_index = (odd_index > 1 ? odd_index - 2 : 0);
-                    int show_size = sizeof(*check_addr) * sys_min(3, cur_buf_size - odd_index - 1);
+                    log_debug(OSH_TC, "my#%d source = %Lf expected = %Lf actual = %Lf buffer size = %lld\n",
+                                       my_proc, (long double)source_value, (long double)expect_value, (long double)value, (INT64_TYPE)cur_buf_size);
 
-                    log_debug(OSH_TC, "index of incorrect value: 0x%08X (%d)\n", odd_index - 1, odd_index - 1);
-                    log_debug(OSH_TC, "buffer interval: 0x%08X - 0x%08X\n", show_index, show_index + show_size);
-                    show_buffer(check_addr + show_index, show_size);
+                    if (rc)
+                    {
+                        TYPE_VALUE* check_addr = target_addr + (i % 2) * MAX_BUFFER_SIZE;
+                        int odd_index = compare_buffer_with_const(check_addr, cur_buf_size, &expect_value, sizeof(expect_value));
+                        int show_index = (odd_index > 1 ? odd_index - 2 : 0);
+                        int show_size = sizeof(*check_addr) * sys_min(3, cur_buf_size - odd_index - 1);
+
+                        log_debug(OSH_TC, "index of incorrect value: 0x%08X (%d)\n", odd_index - 1, odd_index - 1);
+                        log_debug(OSH_TC, "buffer interval: 0x%08X - 0x%08X\n", show_index, show_index + show_size);
+                        show_buffer(check_addr + show_index, show_size);
+                    }
+                    fill_buffer((void *)(source_addr + (i % 2) * MAX_BUFFER_SIZE), cur_buf_size, (void *)&source_value, sizeof(source_value));
+                    fill_buffer((void *)(target_addr + (i % 2) * MAX_BUFFER_SIZE ), cur_buf_size, (void *)&value, sizeof(value));
                 }
-                fill_buffer((void *)(source_addr + (i % 2) * MAX_BUFFER_SIZE), cur_buf_size, (void *)&source_value, sizeof(source_value));
-                fill_buffer((void *)(target_addr + (i % 2) * MAX_BUFFER_SIZE ), cur_buf_size, (void *)&value, sizeof(value));
             }
             shfree(pWrkMult);
         } else {
