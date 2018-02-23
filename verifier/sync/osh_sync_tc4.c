@@ -270,7 +270,7 @@ static int test_group(int start_pe, int pe_size)
     /* skip barrier if not in the group because according to spec
      * the behaviour is not defined
      */
-    if ((my_proc < start_pe) || (my_proc > start_pe + pe_size))
+    if ((my_proc < start_pe) || (my_proc >= start_pe + pe_size))
     {
         goto done;
     }
