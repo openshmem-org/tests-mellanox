@@ -38,7 +38,25 @@ const TE_NODE atomic_tcs[] =
     { NULL, osh_atomic_tc20, "long_inc",       aopt_set_string( "tc20" ), 	"shmem_long_inc(): A simple test.",        TEST_RUN},
     { NULL, osh_atomic_tc21, "longlong_inc",   aopt_set_string( "tc21" ), 	"shmem_longlong_inc(): A simple test.",    TEST_RUN},
     { NULL, osh_atomic_tc22, "stress",         aopt_set_string( "tc22" ), 	"Atomic stress test.",                     TEST_RUN},
-    { NULL, NULL,            NULL,	            aopt_set_string( NULL ),      NULL, TEST_IGNORE}
+    { NULL, osh_atomic_tc23, "int_xor",        aopt_set_string( "tc23" ), 	"shmem_int_xor(): A simple test.",         TEST_RUN},
+    { NULL, osh_atomic_tc24, "long_xor",       aopt_set_string( "tc24" ), 	"shmem_long_xor(): A simple test.",        TEST_RUN},
+    { NULL, osh_atomic_tc25, "longlong_xor",   aopt_set_string( "tc25" ), 	"shmem_longlong_xor(): A simple test.",    TEST_RUN},
+    { NULL, osh_atomic_tc26, "int_fxor",       aopt_set_string( "tc26" ), 	"shmem_int_fxor(): A simple test.",        TEST_RUN},
+    { NULL, osh_atomic_tc27, "long_fxor",      aopt_set_string( "tc27" ), 	"shmem_long_fxor(): A simple test.",       TEST_RUN},
+    { NULL, osh_atomic_tc28, "longlong_fxor",  aopt_set_string( "tc28" ), 	"shmem_longlong_fxor(): A simple test.",   TEST_RUN},
+    { NULL, osh_atomic_tc29, "int_fand",       aopt_set_string( "tc29" ), 	"shmem_int_fand(): A simple test.",        TEST_RUN},
+    { NULL, osh_atomic_tc30, "long_fand",      aopt_set_string( "tc30" ), 	"shmem_long_fand(): A simple test.",       TEST_RUN},
+    { NULL, osh_atomic_tc31, "longlong_fand",  aopt_set_string( "tc31" ), 	"shmem_longlong_fand(): A simple test.",   TEST_RUN},
+    { NULL, osh_atomic_tc32, "int_and",        aopt_set_string( "tc32" ), 	"shmem_int_and(): A simple test.",         TEST_RUN},
+    { NULL, osh_atomic_tc33, "long_and",       aopt_set_string( "tc33" ), 	"shmem_long_and(): A simple test.",        TEST_RUN},
+    { NULL, osh_atomic_tc34, "longlong_and",   aopt_set_string( "tc34" ), 	"shmem_longlong_and(): A simple test.",    TEST_RUN},
+    { NULL, osh_atomic_tc35, "int_for",        aopt_set_string( "tc35" ), 	"shmem_int_for(): A simple test.",         TEST_RUN},
+    { NULL, osh_atomic_tc36, "long_for",       aopt_set_string( "tc36" ), 	"shmem_long_for(): A simple test.",        TEST_RUN},
+    { NULL, osh_atomic_tc37, "longlong_for",   aopt_set_string( "tc37" ), 	"shmem_longlong_for(): A simple test.",    TEST_RUN},
+    { NULL, osh_atomic_tc38, "int_or",         aopt_set_string( "tc38" ), 	"shmem_int_or(): A simple test.",          TEST_RUN},
+    { NULL, osh_atomic_tc39, "long_or",        aopt_set_string( "tc39" ), 	"shmem_long_or(): A simple test.",         TEST_RUN},
+    { NULL, osh_atomic_tc40, "longlong_or",    aopt_set_string( "tc40" ), 	"shmem_longlong_or(): A simple test.",     TEST_RUN},
+    { NULL, NULL,            NULL,	           aopt_set_string( NULL ),      NULL, TEST_IGNORE}
 };
 
 

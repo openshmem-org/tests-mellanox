@@ -86,6 +86,24 @@ oshmem_test_SOURCES = \
 	atomic/osh_atomic_tc20.c \
 	atomic/osh_atomic_tc21.c \
 	atomic/osh_atomic_tc22.c \
+	atomic/osh_atomic_tc23.c \
+	atomic/osh_atomic_tc24.c \
+	atomic/osh_atomic_tc25.c \
+	atomic/osh_atomic_tc26.c \
+	atomic/osh_atomic_tc27.c \
+	atomic/osh_atomic_tc28.c \
+	atomic/osh_atomic_tc29.c \
+	atomic/osh_atomic_tc30.c \
+	atomic/osh_atomic_tc31.c \
+	atomic/osh_atomic_tc32.c \
+	atomic/osh_atomic_tc33.c \
+	atomic/osh_atomic_tc34.c \
+	atomic/osh_atomic_tc35.c \
+	atomic/osh_atomic_tc36.c \
+	atomic/osh_atomic_tc37.c \
+	atomic/osh_atomic_tc38.c \
+	atomic/osh_atomic_tc39.c \
+	atomic/osh_atomic_tc40.c \
 	basic/osh_basic.c \
 	basic/osh_basic_tc1.c \
 	basic/osh_basic_tc2.c \
