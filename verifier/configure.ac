@@ -63,5 +63,15 @@ AC_ARG_ENABLE([error],
 AS_IF([test "$enable_error" != "no"], [AC_DEFINE([ENABLE_ERROR], [1], [Pass -Werror])], [])
 AM_CONDITIONAL([ENABLE_ERROR], [test "$enable_error" != "no"])
 
+AC_CHECK_DECLS([shmem_int_atomic_fand, shmem_long_atomic_fand, shmem_longlong_atomic_fand,
+                shmem_int_atomic_for, shmem_long_atomic_for, shmem_longlong_atomic_for,
+                shmem_int_atomic_fxor, shmem_long_atomic_fxor, shmem_longlong_atomic_fxor],
+    [], [], [#include "shmem.h"])
+
+AC_CHECK_DECLS([shmem_int_atomic_and, shmem_long_atomic_and, shmem_longlong_atomic_and,
+                shmem_int_atomic_or, shmem_long_atomic_or, shmem_longlong_atomic_or,
+                shmem_int_atomic_xor, shmem_long_atomic_xor, shmem_longlong_atomic_xor],
+    [], [], [#include "shmem.h"])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
