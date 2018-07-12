@@ -15,7 +15,7 @@
 
 #include "osh_atomic_tests.h"
 
-#if defined HAVE_DECL_SHMEM_LONG_ATOMIC_FOR && HAVE_DECL_SHMEM_LONG_ATOMIC_FOR
+#if HAVE_DECL_SHMEM_LONG_ATOMIC_FOR
 #  define TEST_ENABLED 1
 #else
 #  define TEST_ENABLED 0
