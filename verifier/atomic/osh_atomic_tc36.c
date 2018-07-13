@@ -15,7 +15,7 @@
 
 #include "osh_atomic_tests.h"
 
-#if HAVE_DECL_SHMEM_LONG_ATOMIC_FOR
+#if HAVE_DECL_SHMEM_ULONG_ATOMIC_FETCH_OR
 #  define TEST_ENABLED 1
 #else
 #  define TEST_ENABLED 0
@@ -30,8 +30,8 @@ static int test_item1(void);
 static int test_item2(void);
 static int test_item3(void);
 
-#define TYPE_VALUE  long
-#define FUNC_VALUE  shmem_long_atomic_for
+#define TYPE_VALUE  unsigned long
+#define FUNC_VALUE  shmem_ulong_atomic_fetch_or
 #define PROC_IN_TEST(proc) ((proc) < 4) /* up to 4 procs are in test */
 #define ROOT_PROC_VALUE(proc, iter) (PROC_IN_TEST(proc) ? (1L << (((proc) % 4) * 2 + ((iter) % 2))) : DEFAULT_VALUE)
 #define PROC_VALUE(proc) (1L << (proc))
