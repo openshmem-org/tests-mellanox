@@ -15,7 +15,7 @@
 
 #include "osh_atomic_tests.h"
 
-#if HAVE_DECL_SHMEM_LONG_ATOMIC_XOR
+#if HAVE_DECL_SHMEM_ULONG_ATOMIC_XOR
 #  define TEST_ENABLED 1
 #else
 #  define TEST_ENABLED 0
@@ -30,8 +30,8 @@ static int test_item1(void);
 static int test_item2(void);
 static int test_item3(void);
 
-#define TYPE_VALUE  long
-#define FUNC_VALUE  shmem_long_atomic_xor
+#define TYPE_VALUE  unsigned long
+#define FUNC_VALUE  shmem_ulong_atomic_xor
 #define PROC_VALUE(x) ((TYPE_VALUE)(x) << 32 | (x))
 #ifdef QUICK_TEST
 #define COUNT_VALUE 10
