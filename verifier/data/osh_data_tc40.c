@@ -30,8 +30,10 @@ static int test_item6(void);
 
 #ifdef QUICK_TEST
 #define COUNT_VALUE		1000
+#define TIMEOUT_SEC             30  /* 30 sec */
 #else
 #define COUNT_VALUE		100000
+#define TIMEOUT_SEC             300 /* 5 min */
 #endif
 #define BUFFER_COUNT	0x1000
 #define SHMEM_SYNC_INVALID 	(-77)
@@ -118,8 +120,16 @@ int osh_data_tc40(const TE_NODE *node, int argc, const char *argv[])
 
 static int wait_for_value(int *shmem_addr, int value)
 {
+    struct timeval tv;
+    __time_t deadline;
+
+    gettimeofday(&tv, NULL);
+    deadline = tv.tv_sec + TIMEOUT_SEC; /* 5 min */
     while (shmem_int_test(shmem_addr, SHMEM_CMP_GE, 0) &&
-           shmem_int_test(shmem_addr, SHMEM_CMP_LT, value));
+           shmem_int_test(shmem_addr, SHMEM_CMP_LT, value) &&
+           (tv.tv_sec < deadline)) {
+        gettimeofday(&tv, NULL);
+    }
     return shmem_int_test(shmem_addr, SHMEM_CMP_EQ, value) ? TC_PASS : TC_FAIL;
 }
 
