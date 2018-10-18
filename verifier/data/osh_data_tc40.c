@@ -30,8 +30,10 @@ static int test_item6(void);
 
 #ifdef QUICK_TEST
 #define COUNT_VALUE		1000
+#define TIMEOUT_SEC             30  /* 30 sec */
 #else
 #define COUNT_VALUE		100000
+#define TIMEOUT_SEC             300 /* 5 min */
 #endif
 #define BUFFER_COUNT	0x1000
 #define SHMEM_SYNC_INVALID 	(-77)
@@ -116,6 +118,20 @@ int osh_data_tc40(const TE_NODE *node, int argc, const char *argv[])
     return rc;
 }
 
+static int wait_for_value(int *shmem_addr, int value)
+{
+    struct timeval tv;
+    __time_t deadline;
+
+    gettimeofday(&tv, NULL);
+    deadline = tv.tv_sec + TIMEOUT_SEC; /* 5 min */
+    while (shmem_int_test(shmem_addr, SHMEM_CMP_GE, 0) &&
+           shmem_int_test(shmem_addr, SHMEM_CMP_LT, value) &&
+           (tv.tv_sec < deadline)) {
+        gettimeofday(&tv, NULL);
+    }
+    return shmem_int_test(shmem_addr, SHMEM_CMP_EQ, value) ? TC_PASS : TC_FAIL;
+}
 
 /****************************************************************************
  * Place for Test Item functions
@@ -150,13 +166,7 @@ static int test_item1(void)
         }
         else if (my_proc % 2)
         {
-            i = 0;
-            while ((0 <= *check_addr) && (*check_addr < count))
-            {
-                shmem_int_get(check_addr, shmem_addr, 1, my_proc);
-                i++;
-            }
-            rc = (*check_addr == count ? TC_PASS : TC_FAIL);
+            rc = wait_for_value(shmem_addr, count);
         }
         else
         {
@@ -220,13 +230,7 @@ static int test_item2(void)
         }
         else if (my_proc % 2)
         {
-            i = 0;
-            while ((0 <= *check_addr) && (*check_addr < count))
-            {
-                shmem_int_get(check_addr, shmem_addr, 1, my_proc);
-                i++;
-            }
-            rc = (*check_addr == count ? TC_PASS : TC_FAIL);
+            rc = wait_for_value(shmem_addr, count);
         }
         else
         {
@@ -284,13 +288,7 @@ static int test_item3(void)
         }
         else if (my_proc % 2)
         {
-            i = 0;
-            while ((0 <= *check_addr) && (*check_addr < count))
-            {
-                shmem_int_get(check_addr, shmem_addr, 1, my_proc);
-                i++;
-            }
-            rc = (*check_addr == count ? TC_PASS : TC_FAIL);
+            rc = wait_for_value(shmem_addr, count);
         }
         else
         {
@@ -353,13 +351,7 @@ static int test_item4(void)
         }
         else if (my_proc % 2)
         {
-            i = 0;
-            while ((0 <= *check_addr) && (*check_addr < count))
-            {
-                shmem_int_get(check_addr, shmem_addr, 1, my_proc);
-                i++;
-            }
-            rc = (*check_addr == count ? TC_PASS : TC_FAIL);
+            rc = wait_for_value(shmem_addr, count);
         }
         else
         {
@@ -417,13 +409,7 @@ static int test_item5(void)
         }
         else if (my_proc % 2)
         {
-            i = 0;
-            while ((0 <= *check_addr) && (*check_addr < count))
-            {
-                shmem_int_get(check_addr, shmem_addr, 1, my_proc);
-                i++;
-            }
-            rc = (*check_addr == count ? TC_PASS : TC_FAIL);
+            rc = wait_for_value(shmem_addr, count);
         }
         else
         {
@@ -491,13 +477,7 @@ static int test_item6(void)
         }
         else if (my_proc % 2)
         {
-            i = 0;
-            while ((0 <= *check_addr) && (*check_addr < count))
-            {
-                shmem_int_get(check_addr, shmem_addr, 1, my_proc);
-                i++;
-            }
-            rc = (*check_addr == count ? TC_PASS : TC_FAIL);
+            rc = wait_for_value(shmem_addr, count);
         }
         else
         {
