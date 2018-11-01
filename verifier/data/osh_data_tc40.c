@@ -128,6 +128,7 @@ static int wait_for_value(int *shmem_addr, int value)
     while (shmem_int_test(shmem_addr, SHMEM_CMP_GE, 0) &&
            shmem_int_test(shmem_addr, SHMEM_CMP_LT, value) &&
            (tv.tv_sec < deadline)) {
+        do_progress();
         gettimeofday(&tv, NULL);
     }
     return shmem_int_test(shmem_addr, SHMEM_CMP_EQ, value) ? TC_PASS : TC_FAIL;
