@@ -474,6 +474,7 @@ static int test_shmem_ptr()
     int *ptr;
     int *pdata;
     int i;
+    int ret = TC_PASS;
 
     pdata = (int *)shmalloc(5678);
     foo = my_pe;
@@ -487,22 +488,23 @@ static int test_shmem_ptr()
         ptr = shmem_ptr(&foo, i);
         if (ptr) {
             log_debug(OSH_TC, "%d: shmem_ptr(static=%p, dst=%d) = %p, val=%d\n", my_pe, &foo, i, ptr, *ptr);
-            if (*ptr != i)
-                goto fail;
+            if (*ptr != i) {
+                ret = TC_FAIL;
+                break;
+            }
         }
         ptr = shmem_ptr(pdata, i);
         if (ptr) {
             log_debug(OSH_TC, "%d: shmem_ptr(heap=%p, dst=%d) = %p, val=%d\n", my_pe, pdata, i, ptr, *ptr);
-            if (*ptr != i)
-                goto fail;
+            if (*ptr != i) {
+                ret = TC_FAIL;
+                break;
+            }
         }
     }
 
     shfree(pdata);
-    return TC_PASS;
-fail:
-    shfree(pdata);
-    return TC_FAIL;
+    return ret;
 }
 
 static int test_max_size(void)
