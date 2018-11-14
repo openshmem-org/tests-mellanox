@@ -20,9 +20,11 @@ typedef struct random_mt_state_t{
 
 /* Initialize the generator from a seed */
 void initialize_mt_generator(int seed, random_mt_state_t *state) {
+    int i;
+
     state->index = 0;
     state->MT[0] = seed;
-    for (int i = 1;  i < 624; i++) { // loop over each other element
+    for (i = 1;  i < 624; i++) { // loop over each other element
         state->MT[i] = LAST_32_BITS(1812433253 * (state->MT[i-1] ^ ((state->MT[i-1]) >> 30)) + i); // 0x6c078965
     }
 }
@@ -30,7 +32,9 @@ void initialize_mt_generator(int seed, random_mt_state_t *state) {
 /* Generate an array of 624 untempered numbers */
 void generate_numbers(random_mt_state_t *state)
 {
-    for (int i = 0; i<624; i++) {
+    int i;
+
+    for (i = 0; i<624; i++) {
         uint32_t y = (state->MT[i] & 0x80000000)                      // bit 31 (32nd bit) of MT[i]
             + (state->MT[(i+1) % 624] & 0x7fffffff);   // bits 0-30 (first 31 bits) of MT[...]
         state->MT[i] = state->MT[(i + 397) % 624] ^ (y >> 1);

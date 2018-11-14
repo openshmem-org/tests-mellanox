@@ -72,7 +72,7 @@ static const AOPT_DESC  self_opt_desc[] =
         'i', AOPT_OPTARG,   aopt_set_literal( 0 ),    aopt_set_string( "info" ),
             "Display list of supported tasks [suite|case] (default: suite)."
     },
-#if defined(__LINUX__)
+#if defined(__linux__)
     {
         'c', AOPT_NOARG,   aopt_set_literal( 0 ),    aopt_set_string( "no-colour" ),
             "Define output in monochrome view."
@@ -317,13 +317,13 @@ static int __do_exec( const TE_NODE* node, const AOPT_OBJECT* opt_obj, int argc,
                         }
                     }
                     log_info(OSH_STD, "%s%-6.6s%s %-10.10s %-14.14s %s\n",
-#if defined(__LINUX__)
+#if defined(__linux__)
                                             ( opt_obj && aopt_check(opt_obj, 'c') ? "" : (!ignored && !skipped ? get_rc_color(rc) : ( !skipped ? "\e[33m" : "\e[34m")) ),
 #else
     ""
 #endif
                                             (!ignored && !skipped ? get_rc_string(rc) : ( !skipped ? "IGNORE" : "SKIP")),
-#if defined(__LINUX__)
+#if defined(__linux__)
                                             ( opt_obj && aopt_check(opt_obj, 'c') ? "" : "\e[0m" ),
 #else
     ""
