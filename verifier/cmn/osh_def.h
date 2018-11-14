@@ -31,7 +31,7 @@
 #include <complex.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#if defined(__LINUX__)
+#if defined(__UNIX__)
     #include <errno.h>
     #include <stdint.h>
     #include <inttypes.h>
@@ -95,7 +95,7 @@ typedef short INT16_TYPE;               /**< 16-bit signed integer */
 typedef unsigned long  UINT32_TYPE;     /**< 32-bit unsigned integer */
 typedef long  INT32_TYPE;               /**< 32-bit signed integer */
 
-#if defined(__LINUX__)
+#if defined(__UNIX__)
     typedef unsigned long long  UINT64_TYPE;    /**< 64-bit unsigned types (compiler dependant). */
     typedef long long           INT64_TYPE;     /**< 64-bit signed types (compiler dependant). */
 #else

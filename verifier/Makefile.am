@@ -29,7 +29,7 @@ if ENABLE_ERROR
 ERROR_FLAG = -Werror
 endif
 
-oshmem_test_CFLAGS =  $(CFLAGS) $(ERROR_FLAG) -Wall -D__LINUX__ \
+oshmem_test_CFLAGS =  $(CFLAGS) $(ERROR_FLAG) -Wall -D__UNIX__ \
 					  -I. \
 					  -I$(top_srcdir) \
 					  -I$(top_srcdir)/cmn
