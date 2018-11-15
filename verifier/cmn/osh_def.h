@@ -16,6 +16,7 @@
 #ifndef _OSH_DEF_H_
 #define _OSH_DEF_H_
 
+#include "config.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -31,16 +32,11 @@
 #include <complex.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#if defined(__LINUX__)
+#ifdef HAVE_UNISTD_H
+    #include <unistd.h>
     #include <errno.h>
     #include <stdint.h>
-    #include <inttypes.h>
-    #include <unistd.h>
     #include <sys/time.h>
-    #include <sys/socket.h>
-    #include <sys/ioctl.h>
-    #include <netinet/in.h>
-    #include <arpa/inet.h>
     #include <pthread.h>
 #else
     #include <windows.h>
@@ -88,20 +84,14 @@ extern "C" {
  *      this check may not work under all compilers.
  */
 /** @{ */
-typedef unsigned char  UINT8_TYPE;      /**< 8-bit  unsigned integer */
-typedef char  INT8_TYPE;                /**< 8-bit  signed integer */
-typedef unsigned short UINT16_TYPE;     /**< 16-bit unsigned integer */
-typedef short INT16_TYPE;               /**< 16-bit signed integer */
-typedef unsigned long  UINT32_TYPE;     /**< 32-bit unsigned integer */
-typedef long  INT32_TYPE;               /**< 32-bit signed integer */
-
-#if defined(__LINUX__)
-    typedef unsigned long long  UINT64_TYPE;    /**< 64-bit unsigned types (compiler dependant). */
-    typedef long long           INT64_TYPE;     /**< 64-bit signed types (compiler dependant). */
-#else
-    typedef unsigned __int64    UINT64_TYPE;    /**< 64-bit unsigned types (compiler dependant). */
-    typedef __int64             INT64_TYPE;     /**< 64-bit signed types (compiler dependant). */
-#endif
+typedef uint8_t   UINT8_TYPE;                   /**< 8-bit  unsigned integer */
+typedef int8_t    INT8_TYPE;                    /**< 8-bit  signed integer */
+typedef uint16_t  UINT16_TYPE;                  /**< 16-bit unsigned integer */
+typedef int16_t   INT16_TYPE;                   /**< 16-bit signed integer */
+typedef uint32_t  UINT32_TYPE;                  /**< 32-bit unsigned integer */
+typedef int32_t   INT32_TYPE;                   /**< 32-bit signed integer */
+typedef uint64_t  UINT64_TYPE;                  /**< 64-bit unsigned types */
+typedef int64_t   INT64_TYPE;                   /**< 64-bit signed types */
 
 #pragma pack( push, 1 )
 typedef struct _DATA128_TYPE

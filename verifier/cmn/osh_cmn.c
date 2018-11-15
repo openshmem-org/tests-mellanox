@@ -344,6 +344,7 @@ void spin_wait(unsigned long usec)
 
 void get_mstat(TE_MEM *mstat)
 {
+#ifdef __linux__
     FILE *f = NULL;
     char temp_buf[256];
 
@@ -370,6 +371,10 @@ void get_mstat(TE_MEM *mstat)
             fclose(f);
         }
     }
+#else
+    mstat->vm_size = -1;
+    mstat->vm_rss = -1;
+#endif
 }
 
 char * get_rc_string(int rc){
