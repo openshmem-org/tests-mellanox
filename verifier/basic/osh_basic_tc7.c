@@ -44,7 +44,7 @@ int osh_basic_tc7(const TE_NODE *node, int argc, const char *argv[])
         int wait_time = 0;
         //wait for pe #1 to change my variable
         //and do some important work in the while
-        while (shmem_int_test(&test_variable, 0, SHMEM_CMP_EQ) && wait_time < 5000000)
+        while (shmem_int_test(&test_variable, SHMEM_CMP_EQ, 0) && wait_time < 5000000)
         {
             usleep(1000);
             wait_time += 1000;
