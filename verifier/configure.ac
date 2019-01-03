@@ -12,6 +12,7 @@ AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 AM_MAINTAINER_MODE
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_HEADERS([cmn/config.h])
 
 if [ $CC --version | grep icc ]; then
     CFLAGS="$CFLAGS -wd188,981,1419,810"
@@ -73,5 +74,6 @@ AC_CHECK_DECLS([shmem_uint_atomic_and, shmem_ulong_atomic_and, shmem_ulonglong_a
                 shmem_uint_atomic_xor, shmem_ulong_atomic_xor, shmem_ulonglong_atomic_xor],
     [], [], [#include "shmem.h"])
 
+AC_CHECK_HEADERS([unistd.h])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

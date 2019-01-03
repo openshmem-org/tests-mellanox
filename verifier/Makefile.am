@@ -21,20 +21,16 @@ EXTRA_DIST=autogen.sh
 
 bin_PROGRAMS = oshmem_test
 
-# This lib is used for basic:tc3
-lib_LIBRARIES = liboshmem_basic_tc3.a
-liboshmem_basic_tc3_a_SOURCES = basic/osh_basic_tc3_lib.c
-
 if ENABLE_ERROR
 ERROR_FLAG = -Werror
 endif
 
-oshmem_test_CFLAGS =  $(CFLAGS) $(ERROR_FLAG) -Wall -D__LINUX__ \
+oshmem_test_CFLAGS =  $(CFLAGS) $(ERROR_FLAG) -Wall \
 					  -I. \
 					  -I$(top_srcdir) \
 					  -I$(top_srcdir)/cmn
 
-oshmem_test_LDFLAGS = $(LDFLAGS) -L. -loshmem_basic_tc3 -lm
+oshmem_test_LDFLAGS = $(LDFLAGS) -L. -lm
 
 noinst_HEADERS = \
 	osh_tests.h \
@@ -114,6 +110,7 @@ oshmem_test_SOURCES = \
 	basic/osh_basic_tc7.c \
 	basic/osh_basic_tc8.c \
 	basic/osh_basic_tc9.c \
+	basic/osh_basic_tc3_lib.c \
 	data/osh_data.c \
 	data/osh_data_tc1.c \
 	data/osh_data_tc2.c \

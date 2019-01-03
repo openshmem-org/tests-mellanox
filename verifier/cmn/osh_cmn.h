@@ -65,7 +65,7 @@ static INLINE int sys_time(struct timeval *tv)
 {
     int status = 0;
 
-#if defined(__LINUX__)
+#if _POSIX_VERSION >= 200112L
     status = gettimeofday(tv, NULL);
 #else
     time_t t = time(NULL);
@@ -81,7 +81,6 @@ static INLINE uint64_t sys_rdtsc(void)
 {
     unsigned long long int result=0;
 
-#if defined(__LINUX__)
     #if defined(__i386__)
         __asm volatile(".byte 0x0f, 0x31" : "=A" (result) : );
 
@@ -108,7 +107,6 @@ static INLINE uint64_t sys_rdtsc(void)
         result = result|lo;
 
     #endif
-#endif /* __LINUX__ */
 
     return (result);
 }

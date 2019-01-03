@@ -34,7 +34,7 @@
 
 #if defined(_AOPT_CONF_TRACE) && (_AOPT_CONF_TRACE==TRUE)
     #if defined(__KERNEL__)
-        #if defined(__LINUX__)
+        #if defined(__linux__)
             #define AOPT_TRACE(fmt, ...)  printk(fmt, ##__VA_ARGS__)
         #else
             #define AOPT_TRACE(fmt, ...)  DbgPrint(fmt, ##__VA_ARGS__)

@@ -36,14 +36,7 @@ int osh_basic_tc7(const TE_NODE *node, int argc, const char *argv[])
 
     if (num_of_pes < 2)
     {
-        rc = TC_SETUP_FAIL;
-        goto FreeMemory;
-    }
-
-    //This test is for 2 ranks only
-    if (me > 1)
-    {
-        goto FreeMemory;
+        return TC_SETUP_FAIL;
     }
 
     if (0 == me)
@@ -63,14 +56,14 @@ int osh_basic_tc7(const TE_NODE *node, int argc, const char *argv[])
             rc = TC_FAIL;
         }
     }
-    else
+    else if (1 == me)
     {
         shmem_int_put(&test_variable, &value_to_set, 1, 0);
     }
 
-FreeMemory:
     shmem_barrier_all();
 
     return rc;
 }
+
 
