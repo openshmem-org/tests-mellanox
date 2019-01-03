@@ -637,6 +637,7 @@ static int test_item6(void)
     int rc = TC_PASS;
     static TYPE_VALUE shmem_addr[MAX_BUFFER_SIZE * 2];
     static TYPE_VALUE send_addr[MAX_BUFFER_SIZE * 2];
+    TYPE_VALUE* check_addr;
     TYPE_VALUE my_value = 0;
     TYPE_VALUE peer_value = 0;
     TYPE_VALUE expect_value = 0;
@@ -691,14 +692,14 @@ static int test_item6(void)
             /* Put value to peer */
             FUNC_VALUE(shmem_addr + (i % 2) * MAX_BUFFER_SIZE, send_addr + (i % 2) * MAX_BUFFER_SIZE, send_buf_size, 0, 0, num_proc, pSyncMult + (i % pSyncNum) * _SHMEM_COLLECT_SYNC_SIZE);
 
-            rc = (!compare_buffer_with_const(shmem_addr + (i % 2) * MAX_BUFFER_SIZE, recv_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
+            check_addr = shmem_addr + (i % 2) * MAX_BUFFER_SIZE;
+            rc = (!compare_buffer_with_const(check_addr, recv_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
 
             log_debug(OSH_TC, "my#%d root(#%d:%lld) expected = %lld actual = %lld buffer size = %lld\n",
-                               my_proc, root_proc, (INT64_TYPE)peer_value, (INT64_TYPE)expect_value, (INT64_TYPE)(*shmem_addr), (INT64_TYPE)send_buf_size);
+                               my_proc, root_proc, (INT64_TYPE)peer_value, (INT64_TYPE)expect_value, (INT64_TYPE)(*check_addr), (INT64_TYPE)send_buf_size);
 
             if (rc)
             {
-                TYPE_VALUE* check_addr = shmem_addr + (i % 2) * MAX_BUFFER_SIZE;
                 int odd_index = compare_buffer_with_const(check_addr, recv_buf_size, &expect_value, sizeof(expect_value));
                 int show_index = (odd_index > 1 ? odd_index - 2 : 0);
                 int show_size = sizeof(*check_addr) * sys_min(3, recv_buf_size - show_index);
