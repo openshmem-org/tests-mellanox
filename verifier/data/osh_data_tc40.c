@@ -121,7 +121,7 @@ int osh_data_tc40(const TE_NODE *node, int argc, const char *argv[])
 static int wait_for_value(int *shmem_addr, int value)
 {
     struct timeval tv;
-    __time_t deadline;
+    time_t deadline;
 
     gettimeofday(&tv, NULL);
     deadline = tv.tv_sec + TIMEOUT_SEC; /* 5 min */
