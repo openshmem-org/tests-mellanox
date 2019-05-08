@@ -12,6 +12,7 @@
 #include "osh_log.h"
 
 #include "shmem.h"
+#include "shmemx.h"
 
 #include "osh_basic_tests.h"
 
@@ -32,6 +33,7 @@ static int test_shmem_ptr();
 static int test_allocation_size(void);
 static int test_global_vars(void);
 static int test_max_size(void);
+static int test_alloc_with_hint(void);
 
 #ifdef QUICK_TEST
 #define LOOP_COUNT  100
@@ -150,6 +152,12 @@ int osh_basic_tc3(const TE_NODE *node, int argc, const char *argv[])
     if (rc == TC_PASS)
     {
         rc = test_shmem_ptr();
+        log_item(node, 12, rc);
+    }
+
+    if (rc == TC_PASS)
+    {
+        rc = test_alloc_with_hint();
         log_item(node, 12, rc);
     }
 
@@ -756,6 +764,83 @@ static int test_global_vars()
         return TC_FAIL;
     }
 
+    return TC_PASS;
+}
+
+static int test_alloc_with_hint()
+{
+#if HAVE_DECL_SHMEMX_MALLOC_WITH_HINT
+    const size_t alloc_base    = 32;
+    const size_t alloc_growed  = 64;
+    const size_t alloc_reduced = 16;
+    char *p1, *p2;
+
+    log_debug(OSH_TC, "testting malloc_with_hint\n");
+
+    p1 = shmemx_malloc_with_hint(alloc_base, SHMEM_HINT_DEVICE_NIC_MEM);
+    if (!p1)
+    {
+        log_error(OSH_TC, "Failed to allocate hinted memory\n");
+        return TC_FAIL;
+    }
+
+    memset(p1, 0xEF, alloc_base);
+
+    p2 = shmem_realloc(p1, alloc_reduced);
+    if (!p2)
+    {
+        log_error(OSH_TC, "Failed to realloc hinted memory\n");
+        return TC_FAIL;
+    }
+
+    if (__verify(p2, alloc_reduced, 0xEF) == TC_FAIL)
+    {
+        log_error(OSH_TC, "Failed to verify from %zu to %zu\n", alloc_base, alloc_reduced);
+        return TC_FAIL;
+    }
+
+    p1 = shmem_realloc(p2, alloc_growed);
+    if (!p1)
+    {
+        log_error(OSH_TC, "Failed to realloc from %zu to %zu\n", alloc_reduced, alloc_growed);
+        return TC_FAIL;
+    }
+    if (__verify(p1, alloc_reduced, 0xEF) == TC_FAIL)
+    {
+        log_error(OSH_TC, "Failed to verify from %zu to %zu\n", alloc_reduced, alloc_growed);
+        return TC_FAIL;
+    }
+
+    /* allocate one more buffer to block in-place realloc */
+    p2 = shmemx_malloc_with_hint(alloc_base, SHMEM_HINT_DEVICE_NIC_MEM);
+    if (!p2)
+    {
+        log_error(OSH_TC, "Failed to allocate hinted memory\n");
+        return TC_FAIL;
+    }
+    p1 = shmem_realloc(p1, alloc_growed * 2);
+    if (!p1)
+    {
+        log_error(OSH_TC, "Failed to realloc from %zu to %zu\n", alloc_growed, alloc_growed * 2);
+        return TC_FAIL;
+    }
+    if (__verify(p1, alloc_reduced, 0xEF) == TC_FAIL)
+    {
+        log_error(OSH_TC, "Failed to verify from %zu to %zu (non-implace)\n", alloc_growed, alloc_growed * 2);
+        return TC_FAIL;
+    }
+    shmem_free(p2);
+
+    /* corner cases */
+    p2 = shmem_realloc(p1, 0); /* works as shfree() */
+    if (!p2) /* returned pointer should NOT be NULL */
+    {
+        log_error(OSH_TC, "failed shrealloc as shfree()\n");
+        return TC_FAIL;
+    }
+
+    shmem_free(p2);
+#endif /* HAVE_DECL_SHMEMX_MALLOC_WITH_HINT */
     return TC_PASS;
 }
 

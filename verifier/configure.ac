@@ -74,6 +74,8 @@ AC_CHECK_DECLS([shmem_uint_atomic_and, shmem_ulong_atomic_and, shmem_ulonglong_a
                 shmem_uint_atomic_xor, shmem_ulong_atomic_xor, shmem_ulonglong_atomic_xor],
     [], [], [#include "shmem.h"])
 
+AC_CHECK_DECLS([shmemx_malloc_with_hint], [], [], [#include "shmemx.h"])
+
 AC_CHECK_HEADERS([unistd.h])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
