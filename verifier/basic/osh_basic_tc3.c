@@ -158,7 +158,10 @@ int osh_basic_tc3(const TE_NODE *node, int argc, const char *argv[])
     if (rc == TC_PASS)
     {
         rc = test_alloc_with_hint();
-        log_item(node, 12, rc);
+        log_item(node, 13, rc);
+        if (rc == TC_NONE) {
+            rc = TC_PASS;
+        }
     }
 
     return rc;
@@ -840,7 +843,10 @@ static int test_alloc_with_hint()
     }
 
     shmem_free(p2);
-#endif /* HAVE_DECL_SHMEMX_MALLOC_WITH_HINT */
     return TC_PASS;
+#else
+    log_warn(OSH_TC, "shmemx_malloc_with_hint is not implemented\n");
+    return TC_NONE;
+#endif /* HAVE_DECL_SHMEMX_MALLOC_WITH_HINT */
 }
 
