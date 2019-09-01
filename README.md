@@ -4,7 +4,7 @@ tests-mellanox
 ### Mellanox Vendor Tests for OpenSHMEM API
 
 * Download and Install HPCx package with OpenSHMEM framework from http://bgate.mellanox.com/products/hpcx/
-* Check README.txt file from a HPCx package for instructions
+* Check README.txt file from an HPCx package for instructions
 * Compile and run test kit as following
 * In the howto instruction 'module load hpcx' makes visible oshcc compiler needed to build OpenSHMEM application
 
