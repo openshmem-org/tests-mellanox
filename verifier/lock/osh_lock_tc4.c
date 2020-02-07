@@ -129,6 +129,7 @@ static void atomic_basic_lock(int pe)
         {
             shmem_putmem((void*)(atomic_lock_sync + me), (void*)&lock_required, sizeof(lock_required), root_pe);
             shmem_fence(); /* quiet */
+            do_progress();
             shmem_getmem((void*)local_lock_sync, (void*)atomic_lock_sync, num_pe * sizeof(*atomic_lock_sync), root_pe);
         } while (local_lock_sync[me] != lock_required);
 
@@ -137,6 +138,7 @@ static void atomic_basic_lock(int pe)
         {
             if (local_lock_sync[index] != ATOMIC_LOCK_IDLE) 
             {
+                do_progress();
                 shmem_getmem((void*)&index, (void*)atomic_lock_turn, sizeof(index), root_pe);
                 shmem_getmem((void*)local_lock_sync, (void*)atomic_lock_sync, num_pe * sizeof(*atomic_lock_sync), root_pe);
             }
@@ -151,6 +153,7 @@ static void atomic_basic_lock(int pe)
         {
             shmem_putmem((void*)(atomic_lock_sync + me), (void*)&lock_active, sizeof(lock_active), root_pe);
             shmem_fence(); /* quiet */
+            do_progress();
             shmem_getmem((void*)local_lock_sync, (void*)atomic_lock_sync, num_pe * sizeof(*atomic_lock_sync), root_pe);
         } while (local_lock_sync[me] != lock_active);
 
