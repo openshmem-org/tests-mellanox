@@ -95,6 +95,7 @@ static void wait_for_completion(int *wait_variable, int pe, int *rc)
     shmem_int_wait(wait_variable,0);
     if (*rc == TC_PASS)
         pthread_cancel(wait_check_thread);
+    pthread_join(wait_check_thread, NULL);
 }
 static int test_item1(void)
 {
@@ -157,7 +158,6 @@ static int test_item1(void)
             }
             log_debug(OSH_TC, "my(#%d:%lld) peer(#%d:%lld) expected = %lld vs got = %lld\n",
                                my_proc, (INT64_TYPE)my_value, peer_proc, (INT64_TYPE)peer_value, (INT64_TYPE)expect_value[0], (INT64_TYPE)local_addr[0]);
-
             /* Wait is set instead of barrier to give some time to all PE for setting their values */
             shmem_barrier_all();
         }

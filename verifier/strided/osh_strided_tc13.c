@@ -95,6 +95,7 @@ static void wait_for_completion(int *wait_variable, int pe, int *rc)
     shmem_int_wait(wait_variable,0);
     if (*rc == TC_PASS)
         pthread_cancel(wait_check_thread);
+    pthread_join(wait_check_thread, NULL);
 }
 
 static int test_item1(void)
