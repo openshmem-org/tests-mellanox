@@ -221,6 +221,7 @@ oshmem_test_SOURCES = \
 	sync/osh_sync_tc5.c \
 	sync/osh_sync_tc6.c \
 	sync/osh_sync_tc7.c \
+	sync/osh_sync_tc8.c \
 	strided/osh_strided.c \
 	strided/osh_strided_tc1.c \
 	strided/osh_strided_tc2.c \
