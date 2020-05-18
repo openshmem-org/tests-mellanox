@@ -18,5 +18,6 @@ int osh_sync_tc4( const TE_NODE *, int, const char ** );
 int osh_sync_tc5( const TE_NODE *, int, const char ** );
 int osh_sync_tc6( const TE_NODE *, int, const char ** );
 int osh_sync_tc7( const TE_NODE *, int, const char ** );
+int osh_sync_tc8( const TE_NODE *, int, const char ** );
 
 #endif
