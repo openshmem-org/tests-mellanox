@@ -23,7 +23,7 @@ const TE_NODE sync_tcs[] =
     { NULL, osh_sync_tc5,  "quiet",         aopt_set_string( "tc5" ), 	"Quiet.", TEST_RUN},
     { NULL, osh_sync_tc6,  "barrier_stress",aopt_set_string( "tc6" ), 	"Barrier All Stress Test.", TEST_RUN},
     { NULL, osh_sync_tc7,  "fence_stress",  aopt_set_string( "tc7" ), 	"Fence Stress Test.", TEST_RUN},
-    { NULL, osh_sync_tc8,  "fence",         aopt_set_string( "tc8" ), 	"Fence.", TEST_RUN},
+    { NULL, osh_sync_tc8,  "fence",         aopt_set_string( "tc8" ), 	"Fence ordering.", TEST_RUN},
     { NULL, NULL,           NULL,	        aopt_set_string( NULL ),    NULL, TEST_IGNORE}
 };
 
