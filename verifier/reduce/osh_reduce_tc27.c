@@ -7,6 +7,8 @@
  *
  * $HEADER$
  */
+#include <limits.h>
+
 #include "osh_def.h"
 #include "osh_cmn.h"
 #include "osh_log.h"
@@ -75,6 +77,23 @@ static const AOPT_DESC  self_opt_desc[] =
     },
 	{ 0, AOPT_NOARG, aopt_set_literal( 0 ), aopt_set_string( NULL ), NULL }
 };
+
+
+int osh_reduce_max_n(TYPE_VALUE max_value, int count_even)
+{
+    int sum = 0, num = 0;
+
+    while (sum < max_value)
+    {
+        ++num;
+        if (!count_even || !(num % 2))
+        {
+            sum += num;
+        }
+    }
+
+    return num - 1;
+}
 
 
 /****************************************************************************
@@ -274,10 +293,13 @@ static int test_item2(void)
     TYPE_VALUE expect_value = 0;
     int num_proc = 0;
     int my_proc = 0;
+    int max_proc_num = 0;
 
     num_proc = _num_pes();
     my_proc = _my_pe();
+    max_proc_num = osh_reduce_max_n(SHRT_MAX, 0);
 
+    if (my_proc > max_proc_num) my_proc = 0;
 
     pWrk = shmalloc(sizeof(*pWrk) * sys_max(1/2 + 1, _SHMEM_REDUCE_MIN_WRKDATA_SIZE));
     if (pWrk)
@@ -301,8 +323,8 @@ static int test_item2(void)
         /* Define expected value */
         expect_value = 0;
         {
-            int k = num_proc;
-            while (k--) expect_value += k;
+            int k = sys_min(max_proc_num, num_proc - 1);
+            while (k) expect_value += k--;
         }
 
         /* This guarantees that PE set initial value before peer change one */
@@ -449,10 +471,13 @@ static int test_item4(void)
     TYPE_VALUE expect_value = 0;
     int num_proc = 0;
     int my_proc = 0;
+    int max_proc_num = 0;
 
     num_proc = _num_pes();
     my_proc = _my_pe();
+    max_proc_num = osh_reduce_max_n(SHRT_MAX, 0);
 
+    if (my_proc > max_proc_num) my_proc = 0;
 
     pWrk = shmalloc(sizeof(*pWrk) * sys_max(1/2 + 1, _SHMEM_REDUCE_MIN_WRKDATA_SIZE));
     if (pWrk)
@@ -473,8 +498,8 @@ static int test_item4(void)
         /* Define expected value */
         expect_value = 0;
         {
-            int k = num_proc;
-            while (k--) expect_value += k;
+            int k = sys_min(max_proc_num, num_proc - 1);
+            while (k) expect_value += k--;
         }
 
         /* This guarantees that PE set initial value before peer change one */
@@ -644,9 +669,13 @@ static int test_item6(void)
     TYPE_VALUE expect_value = 0;
     int num_proc = 0;
     int my_proc = 0;
+    int max_proc_num = 0;
 
     num_proc = _num_pes();
     my_proc = _my_pe();
+    max_proc_num = osh_reduce_max_n(SHRT_MAX, 0);
+
+    if (my_proc > max_proc_num) my_proc = 0;
 
     target_addr = (TYPE_VALUE*)shmalloc(sizeof(*target_addr) * __max_buffer_size);
     source_addr = (TYPE_VALUE*)shmalloc(sizeof(*source_addr) * __max_buffer_size);
@@ -677,8 +706,8 @@ static int test_item6(void)
                 /* Define expected value */
                 expect_value = 0;
                 {
-                    int k = num_proc;
-                    while (k--) expect_value += k;
+                    int k = sys_min(max_proc_num, num_proc - 1);
+                    while (k) expect_value += k--;
                 }
 
                 /* This guarantees that PE set initial value before peer change one */
@@ -758,9 +787,13 @@ static int test_item7(void)
     TYPE_VALUE expect_value = 0;
     int num_proc = 0;
     int my_proc = 0;
+    int max_proc_num = 0;
 
     num_proc = _num_pes();
     my_proc = _my_pe();
+    max_proc_num = osh_reduce_max_n(SHRT_MAX, 1);
+
+    if (my_proc > max_proc_num) my_proc = 0;
 
     target_addr = (TYPE_VALUE*)shmalloc(sizeof(*target_addr) * __max_buffer_size);
     source_addr = (TYPE_VALUE*)shmalloc(sizeof(*source_addr) * __max_buffer_size);
@@ -793,8 +826,12 @@ static int test_item7(void)
                 if (my_proc % 2)    expect_value = DEFAULT_VALUE;
                 else
                 {
-                    int k = num_proc;
-                    while (k--) expect_value += (k % 2 ? 0 : k);
+                    int k = sys_min(max_proc_num, num_proc - 1);
+                    while (k)
+                    {
+                        expect_value += (k % 2 ? 0 : k);
+                        --k;
+                    }
                 }
 
                 /* This guarantees that PE set initial value before peer change one */
@@ -879,6 +916,7 @@ static int test_item8(void)
     TYPE_VALUE expect_value = 0;
     int num_proc = 0;
     int my_proc = 0;
+    int max_proc_num = 0;
     long* pSyncMult = NULL;
     TYPE_VALUE* pWrkMult = NULL;
     int pSyncNum = 2;
@@ -886,6 +924,9 @@ static int test_item8(void)
 
     num_proc = _num_pes();
     my_proc = _my_pe();
+    max_proc_num = osh_reduce_max_n(SHRT_MAX, 1);
+
+    if (my_proc > max_proc_num) my_proc = 0;
 
     pSyncMult = shmalloc(sizeof(*pSyncMult) * pSyncNum * _SHMEM_REDUCE_SYNC_SIZE);
     if (pSyncMult)
@@ -925,8 +966,12 @@ static int test_item8(void)
                 if (my_proc % 2)    expect_value = DEFAULT_VALUE;
                 else
                 {
-                    int k = num_proc;
-                    while (k--) expect_value += (k % 2 ? 0 : k);
+                    int k = sys_min(max_proc_num, num_proc - 1);
+                    while (k)
+                    {
+                        expect_value += (k % 2 ? 0 : k);
+                        --k;
+                    }
                 }
 
                 int in_active_set = check_within_active_set(0, 1, ((num_proc / 2) + (num_proc % 2)), my_proc, num_proc);
