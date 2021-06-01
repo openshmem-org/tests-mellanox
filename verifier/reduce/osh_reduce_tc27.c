@@ -79,20 +79,38 @@ static const AOPT_DESC  self_opt_desc[] =
 };
 
 
-int osh_reduce_max_n(TYPE_VALUE max_value, int count_even)
-{
-    int sum = 0, num = 0;
 
-    while (sum < max_value)
+ /*
+  * Solve quadratic equation to find the closest value of n for the given sum
+ * of first n numbers, according to the formulas:
+ * sum = n * (n + 1) / 2 - for the sum of all numbers
+ * sum = n * (n + 2) / 4 - for the sum of even numbers
+ */
+int osh_reduce_max_n(TYPE_VALUE sum, int count_even)
+{
+    int a = 1;
+    int b, c;
+    double discriminant, x;
+
+    if (count_even)
     {
-        ++num;
-        if (!count_even || !(num % 2))
-        {
-            sum += num;
-        }
+        b = 2;
+        c = -4 * sum;
+    }
+    else
+    {
+        b = 1;
+        c = -2 * sum;
     }
 
-    return num - 1;
+    discriminant = b*b - 4*a*c;
+    if (discriminant < 0) {
+        return 0;
+    }
+
+    x = -b  + sqrt(discriminant);
+
+    return x / (2*a);
 }
 
 
@@ -299,6 +317,11 @@ static int test_item2(void)
     my_proc = _my_pe();
     max_proc_num = osh_reduce_max_n(SHRT_MAX, 0);
 
+   /* This test suite checks that the total sum calculated by shmem_short_sum_to_all
+    * will not be bigger than SHRT_MAX value. If the number of processes is big
+    * enough to oveflow maximal short type, calculate the maximal possible rank id
+    * and use 0 for all processes with rank id bigger that that value.
+    */
     if (my_proc > max_proc_num) my_proc = 0;
 
     pWrk = shmalloc(sizeof(*pWrk) * sys_max(1/2 + 1, _SHMEM_REDUCE_MIN_WRKDATA_SIZE));
@@ -477,6 +500,11 @@ static int test_item4(void)
     my_proc = _my_pe();
     max_proc_num = osh_reduce_max_n(SHRT_MAX, 0);
 
+   /* This test suite checks that the total sum calculated by shmem_short_sum_to_all
+    * will not be bigger than SHRT_MAX value. If the number of processes is big
+    * enough to oveflow maximal short type, calculate the maximal possible rank id
+    * and use 0 for all processes with rank id bigger that that value.
+    */
     if (my_proc > max_proc_num) my_proc = 0;
 
     pWrk = shmalloc(sizeof(*pWrk) * sys_max(1/2 + 1, _SHMEM_REDUCE_MIN_WRKDATA_SIZE));
@@ -675,6 +703,11 @@ static int test_item6(void)
     my_proc = _my_pe();
     max_proc_num = osh_reduce_max_n(SHRT_MAX, 0);
 
+   /* This test suite checks that the total sum calculated by shmem_short_sum_to_all
+    * will not be bigger than SHRT_MAX value. If the number of processes is big
+    * enough to oveflow maximal short type, calculate the maximal possible rank id
+    * and use 0 for all processes with rank id bigger that that value.
+    */
     if (my_proc > max_proc_num) my_proc = 0;
 
     target_addr = (TYPE_VALUE*)shmalloc(sizeof(*target_addr) * __max_buffer_size);
@@ -793,6 +826,11 @@ static int test_item7(void)
     my_proc = _my_pe();
     max_proc_num = osh_reduce_max_n(SHRT_MAX, 1);
 
+   /* This test suite checks that the total sum calculated by shmem_short_sum_to_all
+    * will not be bigger than SHRT_MAX value. If the number of processes is big
+    * enough to oveflow maximal short type, calculate the maximal possible rank id
+    * and use 0 for all processes with rank id bigger that that value.
+    */
     if (my_proc > max_proc_num) my_proc = 0;
 
     target_addr = (TYPE_VALUE*)shmalloc(sizeof(*target_addr) * __max_buffer_size);
@@ -926,6 +964,11 @@ static int test_item8(void)
     my_proc = _my_pe();
     max_proc_num = osh_reduce_max_n(SHRT_MAX, 1);
 
+   /* This test suite checks that the total sum calculated by shmem_short_sum_to_all
+    * will not be bigger than SHRT_MAX value. If the number of processes is big
+    * enough to oveflow maximal short type, calculate the maximal possible rank id
+    * and use 0 for all processes with rank id bigger that that value.
+    */
     if (my_proc > max_proc_num) my_proc = 0;
 
     pSyncMult = shmalloc(sizeof(*pSyncMult) * pSyncNum * _SHMEM_REDUCE_SYNC_SIZE);
