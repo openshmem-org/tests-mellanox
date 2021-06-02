@@ -24,6 +24,13 @@ static int test_item2(void);
 static int test_item3(void);
 
 
+/* workaround for armcc compiler - disable optimization */
+#if defined __ARM_ARCH
+#  define NOOPTIMIZE __attribute__((optnone))
+#else
+#  define NOOPTIMIZE
+#endif
+
 #define TYPE_VALUE  int
 #define FUNC_VALUE  shmem_int_cswap
 #define DEFAULT_VALUE  (-1)
@@ -74,7 +81,7 @@ int osh_atomic_tc7(const TE_NODE *node, int argc, const char *argv[])
 /****************************************************************************
  * Place for Test Item functions
  ***************************************************************************/
-static int test_item1(void)
+static NOOPTIMIZE int test_item1(void)
 {
     int rc = TC_PASS;
     TYPE_VALUE* shmem_addr = NULL;
@@ -131,7 +138,7 @@ static int test_item1(void)
 }
 
 
-static int test_item2(void)
+static NOOPTIMIZE int test_item2(void)
 {
     int rc = TC_PASS;
     TYPE_VALUE* shmem_addr = NULL;
@@ -199,7 +206,7 @@ static int test_item2(void)
 }
 
 
-static int test_item3(void)
+static NOOPTIMIZE int test_item3(void)
 {
     int rc = TC_PASS;
     static TYPE_VALUE shmem_value = 0;
