@@ -80,8 +80,8 @@ static const AOPT_DESC  self_opt_desc[] =
 
 
 
- /*
-  * Solve quadratic equation to find the closest value of n for the given sum
+/*
+ * Solve quadratic equation to find the closest value of n for the given sum
  * of first n numbers, according to the formulas:
  * sum = n * (n + 1) / 2 - for the sum of all numbers
  * sum = n * (n + 2) / 4 - for the sum of even numbers
