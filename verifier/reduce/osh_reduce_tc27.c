@@ -320,7 +320,7 @@ static int test_item2(void)
     * enough to oveflow maximal short type, calculate the maximal possible rank id
     * and use 0 for all processes with rank id bigger that that value.
     */
-    if (my_proc > max_proc_num) my_proc = 0;
+    source_value = my_proc > max_proc_num ? 0 : my_proc;
 
     pWrk = shmalloc(sizeof(*pWrk) * sys_max(1/2 + 1, _SHMEM_REDUCE_MIN_WRKDATA_SIZE));
     if (pWrk)
@@ -339,7 +339,6 @@ static int test_item2(void)
         *target_addr = DEFAULT_VALUE;
 
         /* Set my value */
-        source_value = (TYPE_VALUE)my_proc;
         *source_addr = source_value;
 
         /* Define expected value */
@@ -502,7 +501,7 @@ static int test_item4(void)
     * enough to oveflow maximal short type, calculate the maximal possible rank id
     * and use 0 for all processes with rank id bigger that that value.
     */
-    if (my_proc > max_proc_num) my_proc = 0;
+    source_value = my_proc > max_proc_num ? 0 : my_proc;
 
     pWrk = shmalloc(sizeof(*pWrk) * sys_max(1/2 + 1, _SHMEM_REDUCE_MIN_WRKDATA_SIZE));
     if (pWrk)
@@ -517,7 +516,6 @@ static int test_item4(void)
         int j = 0;
 
         /* Set my value */
-        source_value = (TYPE_VALUE)my_proc;
         *source_addr = source_value;
 
         /* Define expected value */
@@ -705,7 +703,7 @@ static int test_item6(void)
     * enough to oveflow maximal short type, calculate the maximal possible rank id
     * and use 0 for all processes with rank id bigger that that value.
     */
-    if (my_proc > max_proc_num) my_proc = 0;
+    source_value = my_proc > max_proc_num ? 0 : my_proc;
 
     target_addr = (TYPE_VALUE*)shmalloc(sizeof(*target_addr) * __max_buffer_size);
     source_addr = (TYPE_VALUE*)shmalloc(sizeof(*source_addr) * __max_buffer_size);
@@ -730,7 +728,6 @@ static int test_item6(void)
                 shmem_barrier_all();
 
                 /* Set my value */
-                source_value = (TYPE_VALUE)my_proc;
                 fill_buffer((void *)source_addr, cur_buf_size, (void *)&source_value, sizeof(source_value));
 
                 /* Define expected value */
@@ -828,7 +825,7 @@ static int test_item7(void)
     * enough to oveflow maximal short type, calculate the maximal possible rank id
     * and use 0 for all processes with rank id bigger that that value.
     */
-    if (my_proc > max_proc_num) my_proc = 0;
+    source_value = my_proc > max_proc_num ? 0 : my_proc;
 
     target_addr = (TYPE_VALUE*)shmalloc(sizeof(*target_addr) * __max_buffer_size);
     source_addr = (TYPE_VALUE*)shmalloc(sizeof(*source_addr) * __max_buffer_size);
@@ -853,7 +850,6 @@ static int test_item7(void)
                 shmem_barrier_all();
 
                 /* Set my value */
-                source_value = (TYPE_VALUE)my_proc;
                 fill_buffer((void *)source_addr, cur_buf_size, (void *)&source_value, sizeof(source_value));
 
                 /* Define expected value */
@@ -966,7 +962,7 @@ static int test_item8(void)
     * enough to oveflow maximal short type, calculate the maximal possible rank id
     * and use 0 for all processes with rank id bigger that that value.
     */
-    if (my_proc > max_proc_num) my_proc = 0;
+    source_value = my_proc > max_proc_num ? 0 : my_proc;
 
     pSyncMult = shmalloc(sizeof(*pSyncMult) * pSyncNum * _SHMEM_REDUCE_SYNC_SIZE);
     if (pSyncMult)
@@ -988,18 +984,12 @@ static int test_item8(void)
         if (pWrkMult)
         {
             value = DEFAULT_VALUE;
-            source_value = (TYPE_VALUE)my_proc;
             fill_buffer((void *)source_addr, MAX_BUFFER_SIZE * 2, (void *)&source_value, sizeof(source_value));
             fill_buffer((void *)target_addr, MAX_BUFFER_SIZE * 2, (void *)&value, sizeof(value));
             shmem_barrier_all();
             for (i = 0; (i < __cycle_count) && (rc == TC_PASS); i++)
             {
                 cur_buf_size = sys_max(1, (i + 1) * MAX_BUFFER_SIZE / __cycle_count);
-                /* Set initial target value */
-                value = DEFAULT_VALUE;
-
-                /* Set my value */
-                source_value = (TYPE_VALUE)my_proc;
 
                 /* Define expected value */
                 expect_value = 0;
