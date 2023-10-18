@@ -231,7 +231,14 @@ void log_help(const char* format, ...);
 #define log_item( node, id, rc ) \
     { \
         _shmem_sync_result(rc); \
-        log_trace(OSH_TC, "...TC: %s TI #%d result: %s\n", (node && node->name ? node->name : "unknown" ), (id), ( !(rc) ? "PASS" : "FAIL" ) ); \
+        log_trace(OSH_TC, "...TC: %s TI #%d result: %s\n", \
+                  (node && node->name ? node->name : "unknown"), \
+                  (id), \
+                  ((rc == TC_PASS)       ? "PASS"       : \
+                   (rc == TC_FAIL)       ? "FAIL"       : \
+                   (rc == TC_SETUP_FAIL) ? "SETUP FAIL" : \
+                   (rc == TC_NONE        ? "NONE"       : \
+                                           "UNKNOWN"))); \
     }
 
 
