@@ -319,7 +319,6 @@ static inline void do_progress(void)
 #endif
 }
 
-void wait_for_put_completion(int pe, double timeout);
 BOOL compare_buffer(unsigned char *buf1, unsigned char *buf2, size_t size, size_t* odd_pos);
 BOOL compare_longdouble_buffers(long double *buf1, long double *buf2, size_t size, size_t* odd_pos);
 void random_buffer(unsigned char *buf, size_t size);

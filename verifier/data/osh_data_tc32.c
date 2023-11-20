@@ -171,12 +171,10 @@ static int test_item1(void)
         /* Put value to peer */
         FUNC_VALUE(shmem_addr, &peer_value, 1, peer_proc);
 
-        /* Get value put by peer:
-         * These routines start the remote transfer and may return before the data
-         * is delivered to the remote PE
-         */
-        wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+        /* This guarantees that our and peer values are already updated */
+        shmem_barrier_all();
 
+        /* Get value put by peer */
         rc = (expect_value == *shmem_addr ? TC_PASS : TC_FAIL);
 
         log_debug(OSH_TC, "my(#%d:%lld) peer(#%d:%lld) expected = %lld buffer size = %lld\n",
@@ -230,11 +228,10 @@ static int test_item2(void)
         /* Put value to peer */
         FUNC_VALUE(shmem_addr, &peer_value, 1, peer_proc);
 
-        /* Get value put by peer:
-         * These routines start the remote transfer and may return before the data
-         * is delivered to the remote PE
-         */
-		wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+        /* This guarantees that our and peer values are already updated */
+        shmem_barrier_all();
+
+        /* Get value put by peer */
 		value = *shmem_addr;
 
         rc = (expect_value == value ? TC_PASS : TC_FAIL);
@@ -281,12 +278,10 @@ static int test_item3(void)
         /* Put value to peer */
         FUNC_VALUE(shmem_addr, &peer_value, 1, peer_proc);
 
-        /* Get value put by peer:
-         * These routines start the remote transfer and may return before the data
-         * is delivered to the remote PE
-         */
-        wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+        /* This guarantees that our and peer values are already updated */
+        shmem_barrier_all();
 
+        /* Get value put by peer */
         rc = (expect_value == *shmem_addr ? TC_PASS : TC_FAIL);
 
         log_debug(OSH_TC, "my(#%d:%lld) peer(#%d:%lld) expected = %lld buffer size = %lld\n",
@@ -348,11 +343,8 @@ static int test_item4(void)
             /* Put value to peer */
             FUNC_VALUE(shmem_addr, send_addr, cur_buf_size, peer_proc);
 
-            /* Get value put by peer:
-             * These routines start the remote transfer and may return before the data
-             * is delivered to the remote PE
-             */
-            wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+            /* This guarantees that our and peer values are already updated */
+            shmem_barrier_all();
 
             rc = (!compare_buffer_with_const(shmem_addr, cur_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
 
@@ -516,11 +508,8 @@ static int test_item6(void)
             /* Put value to peer */
             FUNC_VALUE(shmem_addr, send_addr, cur_buf_size, peer_proc);
 
-            /* Get value put by peer:
-             * These routines start the remote transfer and may return before the data
-             * is delivered to the remote PE
-             */
-            wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+            /* This guarantees that our and peer values are already updated */
+            shmem_barrier_all();
 
             rc = (!compare_buffer_with_const(shmem_addr, cur_buf_size, &expect_value, sizeof(expect_value)) ? TC_PASS : TC_FAIL);
 

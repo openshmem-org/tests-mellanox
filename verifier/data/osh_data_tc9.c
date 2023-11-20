@@ -109,11 +109,9 @@ static int test_item1(void)
         /* Write value to peer */
         FUNC_VALUE(shmem_addr, peer_value, peer_proc);
 
-        /* Get value put by peer:
-         * These routines start the remote transfer and may return before the data
-         * is delivered to the remote PE
-         */
-        wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+        /* This guarantees that our value is already updated by peer */
+        shmem_barrier_all();
+
         value = *shmem_addr;
 
         rc = (expect_value == value ? TC_PASS : TC_FAIL);
@@ -171,11 +169,9 @@ static int test_item2(void)
         /* Write value to peer */
         FUNC_VALUE(shmem_addr, peer_value, peer_proc);
 
-        /* Get value put by peer:
-         * These routines start the remote transfer and may return before the data
-         * is delivered to the remote PE
-         */
-        wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+        /* This guarantees that our value is already updated by peer */
+        shmem_barrier_all();
+
         value = *shmem_addr;
 
         rc = (expect_value == value ? TC_PASS : TC_FAIL);
@@ -220,6 +216,10 @@ static int test_item3(void)
         /* Set my value */
         my_value = (-1);
         *shmem_addr = my_value;
+
+        /* This guarantees that PE set initial value before peer change one */
+        shmem_barrier_all();
+
         for (i = 0; i < COUNT_VALUE; i++)
         {
             /* Define peer and it value */
@@ -229,17 +229,12 @@ static int test_item3(void)
             /* Define expected value */
             expect_value = (my_proc % 2 ? 1 : -1) * (i * STEP_VALUE);
 
-            /* This guarantees that PE set initial value before peer change one */
-            shmem_barrier_all();
-
             /* Write value to peer */
             FUNC_VALUE(shmem_addr, peer_value, peer_proc);
 
-            /* Get value put by peer:
-             * These routines start the remote transfer and may return before the data
-             * is delivered to the remote PE
-             */
-            wait_for_put_completion(peer_proc,10 /* wait for 10 secs */);
+            /* This guarantees that our value is already updated by peer */
+            shmem_barrier_all();
+
             value = *shmem_addr;
 
             rc = (expect_value == value ? TC_PASS : TC_FAIL);
