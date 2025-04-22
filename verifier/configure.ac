@@ -74,6 +74,14 @@ AC_CHECK_DECLS([shmem_uint_atomic_and, shmem_ulong_atomic_and, shmem_ulonglong_a
                 shmem_uint_atomic_xor, shmem_ulong_atomic_xor, shmem_ulonglong_atomic_xor],
     [], [], [#include "shmem.h"])
 
+AC_CHECK_DECLS([shmem_team_my_pe, shmem_team_split_strided, shmem_team_n_pes,
+                shmem_team_get_config, shmem_team_translate_pe, shmem_team_split_strided,
+                shmem_team_split_2d, shmem_team_destroy],
+    [AM_CONDITIONAL([HAVE_TEAM],[true])
+     CFLAGS="$CFLAGS -DHAVE_TEAM"],
+    [AM_CONDITIONAL([HAVE_TEAM],[false])],
+    [#include "shmem.h"])
+
 AC_CHECK_HEADERS([unistd.h])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

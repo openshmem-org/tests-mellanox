@@ -29,6 +29,7 @@ extern const TE_NODE mix_tcs[];
 extern const TE_NODE analysis_tcs[];
 extern const TE_NODE nbi_tcs[];
 extern const TE_NODE misc_tcs[];
+extern const TE_NODE team_tcs[];
 
 
 
@@ -48,6 +49,9 @@ const TE_NODE exec_tst[] =
    { analysis_tcs,  proc_tst_analysis,  "analysis", aopt_set_string( "an" ),    "Run " MODULE_NAME " ANALYSIS test suite.", TEST_IGNORE},
    { nbi_tcs,       proc_tst_nbi,       "nbi",      aopt_set_string( "nb" ),    "Run " MODULE_NAME " NB DATA Transfer test suite.", TEST_RUN},
    { misc_tcs,      proc_tst_misc,      "misc",     aopt_set_string( "ms" ),    "Run " MODULE_NAME " AUX test suite.", TEST_RUN},
+#ifdef HAVE_DECL_SHMEM_TEAM_SPLIT_STRIDED
+   { team_tcs,      proc_tst_team,      "team",     aopt_set_string( "tm" ),    "Run " MODULE_NAME " TEAM test suite.", TEST_RUN},
+#endif
    { NULL,          NULL,               NULL,       aopt_set_string( NULL ),    NULL }
 };
 
