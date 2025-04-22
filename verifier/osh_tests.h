@@ -23,6 +23,8 @@ int proc_tst_mix( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_analysis( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_nbi( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_misc( const TE_NODE *node, int argc, const char **argv );
+int proc_tst_team( const TE_NODE *node, int argc, const char **argv );
+
 
 #if HAVE_DECL_SHMEM_UINT_ATOMIC_FETCH_AND
 #  define TEST_INT_FETCH_AND TEST_RUN

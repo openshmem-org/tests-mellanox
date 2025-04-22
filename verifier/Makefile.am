@@ -53,6 +53,11 @@ noinst_HEADERS = \
 	nbi/osh_nbi_tests.h \
 	misc/osh_misc_tests.h
 
+if HAVE_TEAM
+noinst_HEADERS += \
+	team/osh_team_tests.h
+endif
+
 oshmem_test_SOURCES = \
 	osh_main.c \
 	osh_exec.c \
@@ -263,6 +268,13 @@ if HAVE_ALLTOALL
 oshmem_test_SOURCES += \
 	coll/osh_coll_tc11.c \
 	coll/osh_coll_tc12.c
+endif
+
+if HAVE_TEAM
+oshmem_test_SOURCES += \
+	team/osh_team.c \
+	team/osh_team_split_strided.c \
+	team/osh_team_split_2d.c
 endif
 
 if ENABLE_MPI
