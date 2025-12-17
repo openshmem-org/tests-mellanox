@@ -29,6 +29,7 @@ extern const TE_NODE mix_tcs[];
 extern const TE_NODE analysis_tcs[];
 extern const TE_NODE nbi_tcs[];
 extern const TE_NODE misc_tcs[];
+extern const TE_NODE signal_tcs[];
 
 
 
@@ -48,6 +49,7 @@ const TE_NODE exec_tst[] =
    { analysis_tcs,  proc_tst_analysis,  "analysis", aopt_set_string( "an" ),    "Run " MODULE_NAME " ANALYSIS test suite.", TEST_IGNORE},
    { nbi_tcs,       proc_tst_nbi,       "nbi",      aopt_set_string( "nb" ),    "Run " MODULE_NAME " NB DATA Transfer test suite.", TEST_RUN},
    { misc_tcs,      proc_tst_misc,      "misc",     aopt_set_string( "ms" ),    "Run " MODULE_NAME " AUX test suite.", TEST_RUN},
+   { signal_tcs,    proc_tst_signal,    "signal",   aopt_set_string( "sg" ),    "Run " MODULE_NAME " SIGNAL test suite.", TEST_RUN},
    { NULL,          NULL,               NULL,       aopt_set_string( NULL ),    NULL }
 };
 

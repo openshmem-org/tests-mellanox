@@ -51,7 +51,8 @@ noinst_HEADERS = \
 	strided/osh_strided_tests.h \
 	analysis/osh_analysis.h \
 	nbi/osh_nbi_tests.h \
-	misc/osh_misc_tests.h
+	misc/osh_misc_tests.h \
+	signal/osh_signal_tests.h
 
 oshmem_test_SOURCES = \
 	osh_main.c \
@@ -251,7 +252,8 @@ oshmem_test_SOURCES = \
 	analysis/osh_analysis_tc5.c \
 	nbi/osh_nbi.c \
 	misc/osh_misc.c \
-	misc/osh_misc_tc1.c
+	misc/osh_misc_tc1.c \
+	signal/osh_signal.c
 
 if HAVE_NBI
 oshmem_test_SOURCES += \
@@ -263,6 +265,17 @@ if HAVE_ALLTOALL
 oshmem_test_SOURCES += \
 	coll/osh_coll_tc11.c \
 	coll/osh_coll_tc12.c
+endif
+
+if HAVE_SIGNAL_PUT
+oshmem_test_SOURCES += \
+	signal/osh_signal_tc1.c \
+	signal/osh_signal_tc2.c
+endif
+
+if HAVE_SIGNAL_FETCH
+oshmem_test_SOURCES += \
+	signal/osh_signal_tc3.c
 endif
 
 if ENABLE_MPI
