@@ -74,6 +74,19 @@ AC_CHECK_DECLS([shmem_uint_atomic_and, shmem_ulong_atomic_and, shmem_ulonglong_a
                 shmem_uint_atomic_xor, shmem_ulong_atomic_xor, shmem_ulonglong_atomic_xor],
     [], [], [#include "shmem.h"])
 
+dnl Check for signal operations
+AC_CHECK_DECLS([shmem_putmem_signal, SHMEM_SIGNAL_SET, SHMEM_SIGNAL_ADD],
+    [AM_CONDITIONAL([HAVE_SIGNAL_PUT],[true])
+     CFLAGS="$CFLAGS -DHAVE_SIGNAL_PUT"
+    ],
+    [AM_CONDITIONAL([HAVE_SIGNAL_PUT],[false])], [#include "shmem.h"])
+
+AC_CHECK_DECLS([shmem_signal_fetch],
+    [AM_CONDITIONAL([HAVE_SIGNAL_FETCH],[true])
+     CFLAGS="$CFLAGS -DHAVE_SIGNAL_FETCH"
+    ],
+    [AM_CONDITIONAL([HAVE_SIGNAL_FETCH],[false])], [#include "shmem.h"])
+
 AC_CHECK_HEADERS([unistd.h])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

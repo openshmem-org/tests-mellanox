@@ -23,6 +23,19 @@ int proc_tst_mix( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_analysis( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_nbi( const TE_NODE *node, int argc, const char **argv );
 int proc_tst_misc( const TE_NODE *node, int argc, const char **argv );
+int proc_tst_signal( const TE_NODE *node, int argc, const char **argv );
+
+#ifdef HAVE_SIGNAL_PUT
+#  define TEST_SIGNAL_PUT_SIGNAL TEST_RUN
+#else
+#  define TEST_SIGNAL_PUT_SIGNAL TEST_SKIP
+#endif
+
+#ifdef HAVE_SIGNAL_FETCH
+#  define TEST_SIGNAL_FETCH TEST_RUN
+#else
+#  define TEST_SIGNAL_FETCH TEST_SKIP
+#endif
 
 #if HAVE_DECL_SHMEM_UINT_ATOMIC_FETCH_AND
 #  define TEST_INT_FETCH_AND TEST_RUN
