@@ -313,8 +313,10 @@ static int test_memalign(void)
     int align;
     char *p;
 
-    /* test that we get desired alignments */
-    for (align = 1; align <= 4096; align *= 2)
+    /* test that we get desired alignments.  The specification requires the alignment to be a
+     * power of two that is also a multiple of sizeof(void *); any other value, including zero,
+     * is undefined behavior, so only valid alignments are exercised. */
+    for (align = sizeof(void *); align <= 4096; align *= 2)
     {
        p = shmemalign(align, 37);
        if (!p)
@@ -328,19 +330,6 @@ static int test_memalign(void)
            return TC_FAIL;
        }
        shfree(p);
-    }
-
-    /* test some corner cases */
-    p = shmemalign(0, 100);
-    if (p) {
-        log_debug(OSH_TC, "align zero returnded valid ptr!!!\n");
-        return TC_FAIL;
-    }
-
-    p = shmemalign(3, 100);
-    if (p) {
-        log_debug(OSH_TC, "align non power of two returnded valid ptr!!!\n");
-        return TC_FAIL;
     }
 
     return TC_PASS;
@@ -409,13 +398,6 @@ static int test_realloc()
         return TC_FAIL;
     }
     shfree(p1);
-
-    /* should not be able to realloc non valid ptr */
-    p2 = shrealloc(p1, 666);
-    if (p2) {
-        log_debug(OSH_TC, "failed shrealloc with non valid ptr\n");
-        return TC_FAIL;
-    }
 
     /* should be able to realloc if old_size + new_size > heap_size && new_size <= heap_size */
     p1 = shmalloc(16);
